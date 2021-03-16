@@ -1,0 +1,22 @@
+{
+    "name": "pcak/contao-bixie-api",
+    "description": "Frontendmodule und Client f\u0000r die Anbindung der bixie API.",
+    "type": "contao-bundle",
+    "require": {
+        "guzzlehttp/guzzle": "7.2.0"
+    },
+    "authors": [
+        {
+            "name": "Lars Braunholz",
+            "email": "l.braunholz@pcak.de"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "pcak\\BixieApi\\": "src/"
+        }
+    },
+    "extra": {
+        "contao-manager-plugin": "pcak\\BixieApi\\ContaoManager\\Plugin"
+   }
+}
