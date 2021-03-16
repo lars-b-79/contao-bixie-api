@@ -12,7 +12,7 @@ class ApiClient
     function __construct() {
         $client = new GuzzleHttp\Client(['base_uri' => self::base_url]);
         $token = $_SESSION['bixie_api_token'];
-    }
+    } 
 
     function isLoggedIn()
     {        
