@@ -1,3 +1,4 @@
 composer.lock
+.phpunit*
 workspace.code-workspace
 vendor/*

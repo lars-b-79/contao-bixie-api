@@ -5,6 +5,9 @@
     "require": {
         "guzzlehttp/guzzle": "7.2.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
+    },
     "authors": [
         {
             "name": "Lars Braunholz",
@@ -13,8 +16,11 @@
     ],
     "autoload": {
         "psr-4": {
-            "pcak\\BixieApi\\": "src/"
-        }
+            "pcak\\BixieApi\\": "src"
+        },
+        "classmap": [
+            "src/"
+        ]
     },
     "extra": {
         "contao-manager-plugin": "pcak\\BixieApi\\ContaoManager\\Plugin"
