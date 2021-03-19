@@ -1,0 +1,8 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+    pcak\BixieApi\EventListener\ProcessFormDataListener:
+        public: true
+        
