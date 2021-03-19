@@ -169,6 +169,56 @@ class ApiClient
     }
 
 
+    public function postBeitrag( String $ticket_id, String $text, array $files = NULL )
+    {
+        if( !$this->isLoggedIn() )
+            return false;
+
+
+        $multipart = array();
+        $multipart[] = [
+            'name'     => 'ticket_id',
+            'contents' => $ticket_id
+        ];
+        $multipart[] = [
+            'name'     => 'text',
+            'contents' => $text
+        ];
+        
+        if( isset( $files ) )
+        {
+            foreach( $files as $filepath )
+                $multipart[] = [
+                    'name'     => basename( $filepath ),
+                    'contents' => fopen( $filepath, 'r' )
+                ];
+        }
+
+      
+
+        $response = NULL;
+        try {
+            $response = $this->client->request( 'POST', '/v1/beitrag', [
+                'headers' => ['Authorization' => 'Bearer ' . $this->token],
+                'multipart' => $multipart
+            ] );
+    
+        } catch (ClientException | ServerException $e) {                      
+            error_log( $e->getMessage() );
+            return false;
+        }
+
+        if( $response->getStatusCode() == 200 )
+        {
+            $body = (string) $response->getBody();
+            $this->posteingang = json_decode( $body );
+            return true;
+        }
+
+        return false;                 
+
+    }
+
 }
 
 
