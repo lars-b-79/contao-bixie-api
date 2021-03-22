@@ -9,7 +9,7 @@ use GuzzleHttp\Exception\ServerException;
 
 class ApiClient 
 {
-    const base_url = 'https://staging-api.bixie.cloud/v1/';
+    const base_url = 'https://api.bixie.cloud/v1/';
     const session_token_key = 'bixie_api_token';
     const session_zusagen_key = 'bixie_api_zusagen';
     const session_posteingang_key = 'bixie_api_posteingang';
@@ -21,9 +21,16 @@ class ApiClient
   
 
 
-    public static function withStandardUrl() {
+    public static function withConfiguredUrl() {
+
+        $url = getenv('BIXIE_API_BASE_URL');
+
+        if( $url === false )
+            $url = self::base_url;
+
+
         $instance = new self();
-        $instance->client = new \GuzzleHttp\Client(['base_uri' => self::base_url]);
+        $instance->client = new \GuzzleHttp\Client(['base_uri' => $url]);
 
         if( !isset($_SESSION) )
             $_SESSION = array();
@@ -64,6 +71,23 @@ class ApiClient
     }
 
  
+    public function updateFromSession()
+    {
+        if( !isset($_SESSION) )
+            $_SESSION = array();
+
+        if( isset($_SESSION[self::session_token_key])) 
+            $instance->token = $_SESSION[self::session_token_key];
+
+        if( isset($_SESSION[self::session_zusagen_key])) 
+            $instance->zusagen = $_SESSION[self::session_zusagen_key];
+
+        if( isset($_SESSION[self::session_posteingang_key])) 
+            $instance->posteingang = $_SESSION[self::session_posteingang_key];
+
+    }
+
+
     public function isLoggedIn()
     {                 
         return !empty( $this->token );
@@ -101,7 +125,18 @@ class ApiClient
         return false;
     }
 
-    
+
+    public function needZusagenUpdate()
+    {
+        return !isset( $this->zusagen );
+    }
+
+    public function needPosteingangUpdate()
+    {
+        return !isset( $this->posteingang );
+    }
+
+
     public function getZusagen()
     {
         return $this->zusagen;

@@ -1,0 +1,7 @@
+<div class="bixie-api-login-status-module"> 
+    <ul>
+      <?php foreach ($this->zusagen as $z): ?>
+        <li><div><?= $z->df ?> / <?= $z->art ?> / <?= $z->name ?></div></li>
+      <?php endforeach; ?>
+  </ul>
+</div>

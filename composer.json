@@ -28,6 +28,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "pcak\\BixieApi\\": "src/",
             "pcak\\BixieApi\\Tests\\": "tests/"
         }
     },

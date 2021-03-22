@@ -294,7 +294,7 @@ final class ApiClientTest extends TestCase
     public function test_real(): void
     {
       
-         $ac = ApiClient::withStandardUrl();
+         $ac = ApiClient::withConfiguredUrl();
         $this->assertFalse( $ac->isLoggedIn() ) ;        
         $this->assertTrue( $ac->login( 'ina.kueppers@immeo.de', 'bav12345' ) ) ;        
         $this->assertTrue( $ac->isLoggedIn() ) ;        

@@ -1,0 +1,7 @@
+<div class="bixie-api-login-status-module"> 
+    Login: <?= $this->loginStatus ?>    
+</div>
+
+<div class="bixie-api-login-status-module"> 
+    id: <?= $this->selected ?>    
+</div>
