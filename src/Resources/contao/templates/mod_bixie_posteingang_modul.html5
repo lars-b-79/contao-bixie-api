@@ -4,6 +4,8 @@
   <ul>
      
     <li><?= $this->vorname ?> <?= $this->name ?> </li>
+    
+    <?php if ( isset( $this->offen ) ): ?>
      <li>Offen <?= count($this->offen) ?>
       <ul style="text-indent: 2em;">
         <?php foreach ($this->offen as $p): ?>
@@ -11,7 +13,9 @@
         <?php endforeach; ?>
       </ul>
     </li>
+    <?php endif ?>
 
+    <?php if ( isset( $this->geschlossen ) ): ?>
     <li>Geschlossen <?= count($this->geschlossen) ?>
       <ul style="text-indent: 2em;">
         <?php foreach ($this->geschlossen as $p): ?>
@@ -19,6 +23,7 @@
         <?php endforeach; ?>
       </ul>
     </li>
+    <?php endif ?>
      
      
   </ul>
