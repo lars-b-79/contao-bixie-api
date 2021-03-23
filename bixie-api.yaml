@@ -1,0 +1,304 @@
+openapi: 3.0.0
+info:
+    title: bixie API
+    description: Zugriff auf Daten in bixie
+    version: 0.1.0
+
+servers:
+    -   url: http://localhost:8080/v1
+    -   url: http://staging-api.bixie.cloud/v1
+    -   url: http://api.bixie.cloud/v1
+
+
+components:
+    securitySchemes:
+        bearerAuth:            # arbitrary name for the security scheme
+            type: http
+            scheme: bearer
+    schemas:
+        Person:
+            type: object
+            properties:
+                username:
+                    type: string
+                name:
+                    type: string
+                vorname:
+                    type: string
+                zusagen:
+                    $ref: '#/components/schemas/ArrayOfZusage'
+        Login:
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+        ArrayOfZusage:
+            type: array
+            items:
+                $ref: '#/components/schemas/Zusage'
+        ArrayOfDatei:
+            type: array
+            items:
+                $ref: '#/components/schemas/Datei'
+        ArrayOfTag:
+            type: array
+            items:
+                $ref: '#/components/schemas/Tag'
+        ArrayOfBeitrag:
+            type: array
+            items:
+                $ref: '#/components/schemas/Beitrag'
+        ArrayOfBaustein:
+            type: array
+            items:
+                $ref: '#/components/schemas/Baustein'
+        ArrayOfTicketbeitrag:
+            type: array
+            items:
+                $ref: '#/components/schemas/Ticketbeitrag'
+        ArrayOfTicket:
+            type: array
+            items:
+                $ref: '#/components/schemas/Ticket'
+        Posteingang:
+            type: object
+            properties:
+                username:
+                    type: string
+                name:
+                    type: string
+                vorname:
+                    type: string
+                offen:
+                    $ref: '#/components/schemas/ArrayOfTicket'
+                geschlossen:
+                    $ref: '#/components/schemas/ArrayOfTicket'
+        Ticket:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                erstelltDatum:
+                    type: string
+                abgeschlossenDatum:
+                    type: string
+                abgeschlossen:
+                    type: boolean
+                beitraege:
+                    $ref: '#/components/schemas/ArrayOfTicketbeitrag'
+        NeuerTicketBeitrag:
+            type: object
+            properties:
+                ticket_id:
+                    type: string
+                text:
+                    type: string
+                filename:
+                    type: array
+                    items:
+                        type: string
+                        format: binary
+        Ticketbeitrag:
+            type: object
+            properties:
+                id:
+                    type: string
+                text:
+                    type: string
+                erstellt:
+                    type: string
+                author:
+                    type: string
+                author_username:
+                    type: string
+                files:
+                    $ref: '#/components/schemas/ArrayOfDatei'
+        Beitrag:
+            type: object
+            properties:
+                name:
+                    type: string
+                finanzierung:
+                    type: string
+                    enum: [ arbeitgeberfinanziert, arbeitnehmerfinanziert ]
+                zahlweise:
+                    type: string
+                    enum: [ monatlich, quartalsweise, halbjährlich, jährlich, einmalig ]
+                beitrag:
+                    type: string
+        Baustein:
+            type: object
+            properties:
+                name:
+                    type: string
+                stichtag:
+                    type: string
+                beitrag:
+                    type: string
+                leistung:
+                    type: string
+        Datei:
+            type: object
+            properties:
+                link:
+                    type: string
+                    format: uri
+                    description: Link zur Datei
+                name:
+                    type: string
+                    description: Name der Datei
+                upload:
+                    type: string
+                    description: Uploaddatum
+        Tag:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: Tagname
+                files:
+                    $ref: '#/components/schemas/ArrayOfDatei'
+        Leistung:
+            type: object
+            properties:
+                stichtag:
+                    type: string
+                    description: Stichtag der Leistung
+                garantiert:
+                    type: integer
+                    description: Leistung in cent
+                prognostiziert:
+                    type: integer
+                    description: Leistung in cent
+                zahlungsart:
+                    type: string
+                    enum: [ Rente, Kapital ]
+                option:
+                    type: boolean
+        Zusage:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int64
+                name:
+                    type: string
+                    description: Name der VO oder Kenn Nummer
+                df:
+                    type: string
+                    description: Durchführungsweg.
+                art:
+                    type: string
+                    description: Zusagetyp.
+                vt:
+                    type: string
+                    description: Versorgungsträger
+                vn:
+                    type: string
+                    description: Vertragsnummer
+                vu:
+                    type: string
+                    description: Versicherungsgesellschaft
+                uk:
+                    type: string
+                    description: Unterstützungskasse
+                kennzahl:
+                    type: string
+                    description: Kennzahl der VO
+                lb:
+                    type: string
+                    description: Leistungsbeginn
+                gb:
+                    type: string
+                    description: Gesamtbeitrag
+                buf:
+                    type: boolean
+                    description: Beitragsbefreiung bei BU
+                alter:
+                    $ref: '#/components/schemas/Leistung'
+                    description: Leistung bei Vertragsablauf oder Pensionsdatum
+                tod:
+                    $ref: '#/components/schemas/Leistung'
+                    description: Leistung bei Tod
+                bu:
+                    $ref: '#/components/schemas/Leistung'
+                    description: Leistung bei Berufsunfähigkeit
+                beitraege:
+                    $ref: '#/components/schemas/ArrayOfBeitrag'
+                    description: Array mit Beitragskomponenten
+                bausteine:
+                    $ref: '#/components/schemas/ArrayOfBaustein'
+                    description: Array mit Bausteinen
+                tags:
+                    $ref: '#/components/schemas/ArrayOfTag'
+                    description: Array mit Tags und Dateien
+            required:
+                - id
+
+paths:
+    /token:
+        post:
+            summary: login
+            operationId: getToken
+            responses:
+                '200':
+                    description: Successful operation
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Login'
+
+    /zusagen:
+        get:
+            security:
+                -   bearerAuth: [ ]
+            summary: liefert alle Zusagen einer Person
+            operationId: getAlleZusagen
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ArrayOfZusage'
+
+    /posteingang:
+        get:
+            security:
+                -   bearerAuth: [ ]
+            summary: liefert den kompletten Posteingang
+            operationId: getPosteingang
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Posteingang'
+    /beitrag:
+        post:
+            security:
+                -   bearerAuth: [ ]
+            summary: Postet einen neuen Beitrag
+            operationId: postBeitrag
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Posteingang'
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            $ref: '#/components/schemas/NeuerTicketBeitrag'
+
+
