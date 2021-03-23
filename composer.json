@@ -2,6 +2,7 @@
     "name": "pcak/contao-bixie-api",
     "description": "Frontendmodule und Client f\u0000r die Anbindung der bixie API.",
     "type": "contao-bundle",
+    "license": "LGPL-3.0-or-later",
     "require": {
         "guzzlehttp/guzzle": "7.2.0"
     },

@@ -19,26 +19,25 @@ class BixieApiLoginFormListener
 
 
     public function __invoke(
-        array $submittedData, 
-        array $formData, 
-        ?array $files, 
-        array $labels, 
+        array $submittedData,
+        array $formData,
+        ?array $files,
+        array $labels,
         Form $form
-    ): void
-    {
-        if( isset( $form->formID ) && $form->formID == self::form_id )
-            $this->login( $submittedData[ self::field_username ], $submittedData[ self::field_password ] );     
+    ): void {
+        if (isset($form->formID) && $form->formID == self::form_id) {
+            $this->login($submittedData[ self::field_username ], $submittedData[ self::field_password ]);
+        }
     }
 
-    private function login( string $username, string $password )
+    private function login(string $username, string $password)
     {
-        if( is_null( $this->client ) )
+        if (is_null($this->client)) {
             $this->client = \pcak\BixieApi\ApiClient::withConfiguredUrl();
-        else
+        } else {
             $this->client->updateFromSession();
+        }
 
-        $this->client->login( $username, $password );
+        $this->client->login($username, $password);
     }
 }
-
-?>

@@ -21,37 +21,40 @@ class BixieBavModulController extends AbstractFrontendModuleController
         $zusage_id = $request->query->get('zid');
 
 
-        if( !isset( $zusage_id ) )
-             return $template->getResponse();
+        if (!isset($zusage_id)) {
+            return $template->getResponse();
+        }
 
-        if( is_null( $this->client ) )
+        if (is_null($this->client)) {
             $this->client = \pcak\BixieApi\ApiClient::withConfiguredUrl();
-        else
+        } else {
             $this->client->updateFromSession();
+        }
 
 
-        if( !$this->client->isLoggedIn() )
+        if (!$this->client->isLoggedIn()) {
             return $template->getResponse();
+        }
 
-        if( $this->client->needZusagenUpdate() )
+        if ($this->client->needZusagenUpdate()) {
             $this->client->readZusagen();
+        }
 
-        if( $this->client->needZusagenUpdate() )
+        if ($this->client->needZusagenUpdate()) {
             return $template->getResponse();
+        }
 
 
 
-        $zl = $this->client->getZusagen();       
+        $zl = $this->client->getZusagen();
         $template->vorname = $zl->vorname;
         $template->name = $zl->name;
-        $template->username = $zl->username;       
+        $template->username = $zl->username;
        
 
     
-        foreach( $zl->zusagen as $z0) 
-        {
-            if( $z0->id == $zusage_id )
-            {
+        foreach ($zl->zusagen as $z0) {
+            if ($z0->id == $zusage_id) {
                 $template->zusage = $z0;
                 break;
             }
@@ -62,5 +65,3 @@ class BixieBavModulController extends AbstractFrontendModuleController
         return $template->getResponse();
     }
 }
-
-?>

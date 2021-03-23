@@ -18,20 +18,24 @@ class BixieBavListModulController extends AbstractFrontendModuleController
 
     protected function getResponse(Template $template, ModuleModel $model, Request $request): ?Response
     {
-        if( is_null( $this->client ) )
+        if (is_null($this->client)) {
             $this->client = \pcak\BixieApi\ApiClient::withConfiguredUrl();
-        else
+        } else {
             $this->client->updateFromSession();
+        }
 
 
-        if( !$this->client->isLoggedIn() )
+        if (!$this->client->isLoggedIn()) {
             return $template->getResponse();
+        }
 
-        if( $this->client->needZusagenUpdate() )
+        if ($this->client->needZusagenUpdate()) {
             $this->client->readZusagen();
+        }
 
-        if( $this->client->needZusagenUpdate() )
+        if ($this->client->needZusagenUpdate()) {
             return $template->getResponse();
+        }
 
         $z = $this->client->getZusagen();
 
@@ -43,5 +47,3 @@ class BixieBavListModulController extends AbstractFrontendModuleController
         return $template->getResponse();
     }
 }
-
-?>

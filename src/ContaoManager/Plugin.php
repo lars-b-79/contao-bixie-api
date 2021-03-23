@@ -18,4 +18,3 @@ class Plugin implements BundlePluginInterface
         ];
     }
 }
-?>

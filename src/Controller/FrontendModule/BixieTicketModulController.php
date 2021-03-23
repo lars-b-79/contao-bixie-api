@@ -21,41 +21,41 @@ class BixieTicketModulController extends AbstractFrontendModuleController
         $prozess_id = $request->query->get('pid');
 
 
-        if( !isset( $prozess_id ) )
-             return $template->getResponse();
-
-        if( is_null( $this->client ) )
-            $this->client = \pcak\BixieApi\ApiClient::withConfiguredUrl();
-        else
-            $this->client->updateFromSession();
-
-
-        if( $this->client->needPosteingangUpdate() )
-            $this->client->readPosteingang();
-
-        if( $this->client->needPosteingangUpdate() )
+        if (!isset($prozess_id)) {
             return $template->getResponse();
+        }
+
+        if (is_null($this->client)) {
+            $this->client = \pcak\BixieApi\ApiClient::withConfiguredUrl();
+        } else {
+            $this->client->updateFromSession();
+        }
+
+
+        if ($this->client->needPosteingangUpdate()) {
+            $this->client->readPosteingang();
+        }
+
+        if ($this->client->needPosteingangUpdate()) {
+            return $template->getResponse();
+        }
 
         $zl = $this->client->getPosteingang();
         $template->vorname = $zl->vorname;
         $template->name = $zl->name;
-        $template->username = $zl->username;       
+        $template->username = $zl->username;
        
 
     
-        foreach( $zl->offen as $t0) 
-        {
-            if( $t0->id == $prozess_id )
-            {
+        foreach ($zl->offen as $t0) {
+            if ($t0->id == $prozess_id) {
                 $template->ticket = $t0;
                 break;
             }
         }
 
-        foreach( $zl->geschlossen as $t0) 
-        {
-            if( $t0->id == $prozess_id )
-            {
+        foreach ($zl->geschlossen as $t0) {
+            if ($t0->id == $prozess_id) {
                 $template->ticket = $t0;
                 break;
             }
@@ -65,5 +65,3 @@ class BixieTicketModulController extends AbstractFrontendModuleController
         return $template->getResponse();
     }
 }
-
-?>

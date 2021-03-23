@@ -17,15 +17,14 @@ class BixieLoginStatusModulController extends AbstractFrontendModuleController
 
     protected function getResponse(Template $template, ModuleModel $model, Request $request): ?Response
     {
-        if( is_null( $this->client ) )
+        if (is_null($this->client)) {
             $this->client = \pcak\BixieApi\ApiClient::withConfiguredUrl();
-        else
+        } else {
             $this->client->updateFromSession();
+        }
 
-        $template->loginStatus = $this->client->isLoggedIn() ? 'eingeloggt' :  'nicht eingeloggt';         
+        $template->loginStatus = $this->client->isLoggedIn() ? 'eingeloggt' :  'nicht eingeloggt';
 
         return $template->getResponse();
     }
 }
-
-?>

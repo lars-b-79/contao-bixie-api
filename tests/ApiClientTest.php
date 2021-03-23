@@ -9,9 +9,6 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Client;
 use pcak\BixieApi\ApiClient;
 
-
-
-
 final class ApiClientTest extends TestCase
 {
     public function test_login_ok(): void
@@ -23,13 +20,12 @@ final class ApiClientTest extends TestCase
         $handlerStack = HandlerStack::create($mock);
         
 
-        $ac = ApiClient::withTestHandler( $handlerStack );
-        $this->assertFalse( $ac->isLoggedIn() ) ;        
-        $this->assertTrue( $ac->login( 'test', 'test' ) ) ;        
-        $this->assertTrue( $ac->isLoggedIn() ) ;        
+        $ac = ApiClient::withTestHandler($handlerStack);
+        $this->assertFalse($ac->isLoggedIn()) ;
+        $this->assertTrue($ac->login('test', 'test')) ;
+        $this->assertTrue($ac->isLoggedIn()) ;
         
-        unset( $_SESSION );
-
+        unset($_SESSION);
     }
 
     public function test_login_failed(): void
@@ -41,17 +37,17 @@ final class ApiClientTest extends TestCase
         $handlerStack = HandlerStack::create($mock);
         
 
-        $ac = ApiClient::withTestHandler( $handlerStack );
+        $ac = ApiClient::withTestHandler($handlerStack);
        
-        $this->assertFalse( $ac->isLoggedIn() ) ;        
-        $this->assertFalse( $ac->login( 'test', 'test' ) ) ;        
-        $this->assertFalse( $ac->isLoggedIn() ) ;        
-        unset( $_SESSION );
+        $this->assertFalse($ac->isLoggedIn()) ;
+        $this->assertFalse($ac->login('test', 'test')) ;
+        $this->assertFalse($ac->isLoggedIn()) ;
+        unset($_SESSION);
     }
 
 
     public function test_login_failed_500(): void
-    {    
+    {
         $mock = new MockHandler([
             new Response(500, ['Content-Length' => 0])
         ]);
@@ -59,11 +55,11 @@ final class ApiClientTest extends TestCase
         $handlerStack = HandlerStack::create($mock);
         
 
-        $ac = ApiClient::withTestHandler( $handlerStack );
-        $this->assertFalse( $ac->isLoggedIn() ) ;        
-        $this->assertFalse( $ac->login( 'test', 'test' ) ) ;        
-        $this->assertFalse( $ac->isLoggedIn() ) ;        
-        unset( $_SESSION );
+        $ac = ApiClient::withTestHandler($handlerStack);
+        $this->assertFalse($ac->isLoggedIn()) ;
+        $this->assertFalse($ac->login('test', 'test')) ;
+        $this->assertFalse($ac->isLoggedIn()) ;
+        unset($_SESSION);
     }
 
 
@@ -77,20 +73,19 @@ final class ApiClientTest extends TestCase
         $handlerStack = HandlerStack::create($mock);
         
 
-        $ac = ApiClient::withTestHandler( $handlerStack );
-        $this->assertFalse( $ac->isLoggedIn() ) ;        
-        $this->assertTrue( $ac->login( 'test', 'test' ) ) ;        
-        $this->assertTrue( $ac->isLoggedIn() ) ;
-        $this->assertTrue( $ac->readZusagen() );        
+        $ac = ApiClient::withTestHandler($handlerStack);
+        $this->assertFalse($ac->isLoggedIn()) ;
+        $this->assertTrue($ac->login('test', 'test')) ;
+        $this->assertTrue($ac->isLoggedIn()) ;
+        $this->assertTrue($ac->readZusagen());
 
         $z = $ac->getZusagen();
 
-        $this->assertEquals( 1, count($z->zusagen) );        
-        $this->assertEquals( "Direktzusage", $z->zusagen[0]->df );        
+        $this->assertEquals(1, count($z->zusagen));
+        $this->assertEquals("Direktzusage", $z->zusagen[0]->df);
 
         
-        unset( $_SESSION );
-
+        unset($_SESSION);
     }
 
 
@@ -105,18 +100,17 @@ final class ApiClientTest extends TestCase
         $handlerStack = HandlerStack::create($mock);
         
 
-        $ac = ApiClient::withTestHandler( $handlerStack );
-        $this->assertFalse( $ac->isLoggedIn() ) ;        
-        $this->assertTrue( $ac->login( 'test', 'test' ) ) ;        
-        $this->assertTrue( $ac->isLoggedIn() ) ;
-        $this->assertFalse( $ac->readZusagen() );        
+        $ac = ApiClient::withTestHandler($handlerStack);
+        $this->assertFalse($ac->isLoggedIn()) ;
+        $this->assertTrue($ac->login('test', 'test')) ;
+        $this->assertTrue($ac->isLoggedIn()) ;
+        $this->assertFalse($ac->readZusagen());
 
         $z = $ac->getZusagen();
-        $this->assertFalse( isset($z) );        
+        $this->assertFalse(isset($z));
 
           
-        unset( $_SESSION );
-
+        unset($_SESSION);
     }
 
 
@@ -131,20 +125,19 @@ final class ApiClientTest extends TestCase
         $handlerStack = HandlerStack::create($mock);
         
 
-        $ac = ApiClient::withTestHandler( $handlerStack );
-        $this->assertFalse( $ac->isLoggedIn() ) ;        
-        $this->assertTrue( $ac->login( 'test', 'test' ) ) ;        
-        $this->assertTrue( $ac->isLoggedIn() ) ;
-        $this->assertTrue( $ac->readPosteingang() );        
+        $ac = ApiClient::withTestHandler($handlerStack);
+        $this->assertFalse($ac->isLoggedIn()) ;
+        $this->assertTrue($ac->login('test', 'test')) ;
+        $this->assertTrue($ac->isLoggedIn()) ;
+        $this->assertTrue($ac->readPosteingang());
 
         $p = $ac->getPosteingang();
 
-        $this->assertEquals( 2, count($p->offen) );        
-        $this->assertEquals( 0, count($p->geschlossen) );        
+        $this->assertEquals(2, count($p->offen));
+        $this->assertEquals(0, count($p->geschlossen));
 
         
-        unset( $_SESSION );
-
+        unset($_SESSION);
     }
 
 
@@ -153,24 +146,23 @@ final class ApiClientTest extends TestCase
     {
         $mock = new MockHandler([
             new Response(200, [], 'WebToken'),
-            new Response(500, [] )
+            new Response(500, [])
         ]);
         
         $handlerStack = HandlerStack::create($mock);
         
 
-        $ac = ApiClient::withTestHandler( $handlerStack );
-        $this->assertFalse( $ac->isLoggedIn() ) ;        
-        $this->assertTrue( $ac->login( 'test', 'test' ) ) ;        
-        $this->assertTrue( $ac->isLoggedIn() ) ;
-        $this->assertFalse( $ac->readPosteingang() );        
+        $ac = ApiClient::withTestHandler($handlerStack);
+        $this->assertFalse($ac->isLoggedIn()) ;
+        $this->assertTrue($ac->login('test', 'test')) ;
+        $this->assertTrue($ac->isLoggedIn()) ;
+        $this->assertFalse($ac->readPosteingang());
 
         $p = $ac->getPosteingang();
 
-        $this->assertFalse( isset($p) );        
+        $this->assertFalse(isset($p));
         
-        unset( $_SESSION );
-
+        unset($_SESSION);
     }
 
 
@@ -185,20 +177,19 @@ final class ApiClientTest extends TestCase
         $handlerStack = HandlerStack::create($mock);
         
 
-        $ac = ApiClient::withTestHandler( $handlerStack );
-        $this->assertFalse( $ac->isLoggedIn() ) ;        
-        $this->assertTrue( $ac->login( 'test', 'test' ) ) ;        
-        $this->assertTrue( $ac->isLoggedIn() ) ;
-        $this->assertTrue( $ac->postBeitrag( "2441967", "Hallo" ) );        
+        $ac = ApiClient::withTestHandler($handlerStack);
+        $this->assertFalse($ac->isLoggedIn()) ;
+        $this->assertTrue($ac->login('test', 'test')) ;
+        $this->assertTrue($ac->isLoggedIn()) ;
+        $this->assertTrue($ac->postBeitrag("2441967", "Hallo"));
 
         $p = $ac->getPosteingang();
 
-        $this->assertEquals( 2, count($p->offen) );        
-        $this->assertEquals( 0, count($p->geschlossen) );        
+        $this->assertEquals(2, count($p->offen));
+        $this->assertEquals(0, count($p->geschlossen));
 
         
-        unset( $_SESSION );
-
+        unset($_SESSION);
     }
 
 
@@ -206,25 +197,24 @@ final class ApiClientTest extends TestCase
     {
         $mock = new MockHandler([
             new Response(200, [], 'WebToken'),
-            new Response(500, [] )
+            new Response(500, [])
         ]);
         
         $handlerStack = HandlerStack::create($mock);
         
 
-        $ac = ApiClient::withTestHandler( $handlerStack );
-        $this->assertFalse( $ac->isLoggedIn() ) ;        
-        $this->assertTrue( $ac->login( 'test', 'test' ) ) ;        
-        $this->assertTrue( $ac->isLoggedIn() ) ;
-        $this->assertFalse( $ac->postBeitrag( "2441967", "Hallo" ) );        
+        $ac = ApiClient::withTestHandler($handlerStack);
+        $this->assertFalse($ac->isLoggedIn()) ;
+        $this->assertTrue($ac->login('test', 'test')) ;
+        $this->assertTrue($ac->isLoggedIn()) ;
+        $this->assertFalse($ac->postBeitrag("2441967", "Hallo"));
 
         $p = $ac->getPosteingang();
 
-        $this->assertFalse( isset($p) );        
+        $this->assertFalse(isset($p));
 
         
-        unset( $_SESSION );
-
+        unset($_SESSION);
     }
 
 
@@ -233,25 +223,24 @@ final class ApiClientTest extends TestCase
     {
         $mock = new MockHandler([
             new Response(200, [], 'WebToken'),
-            new Response(400, [] )
+            new Response(400, [])
         ]);
         
         $handlerStack = HandlerStack::create($mock);
         
 
-        $ac = ApiClient::withTestHandler( $handlerStack );
-        $this->assertFalse( $ac->isLoggedIn() ) ;        
-        $this->assertTrue( $ac->login( 'test', 'test' ) ) ;        
-        $this->assertTrue( $ac->isLoggedIn() ) ;
-        $this->assertFalse( $ac->postBeitrag( "2441967", "Hallo" ) );        
+        $ac = ApiClient::withTestHandler($handlerStack);
+        $this->assertFalse($ac->isLoggedIn()) ;
+        $this->assertTrue($ac->login('test', 'test')) ;
+        $this->assertTrue($ac->isLoggedIn()) ;
+        $this->assertFalse($ac->postBeitrag("2441967", "Hallo"));
 
         $p = $ac->getPosteingang();
 
-        $this->assertFalse( isset($p) );        
+        $this->assertFalse(isset($p));
 
         
-        unset( $_SESSION );
-
+        unset($_SESSION);
     }
 
 
@@ -266,61 +255,24 @@ final class ApiClientTest extends TestCase
         $handlerStack = HandlerStack::create($mock);
         
 
-        $ac = ApiClient::withTestHandler( $handlerStack );
-        $this->assertFalse( $ac->isLoggedIn() ) ;        
-        $this->assertTrue( $ac->login( 'test', 'test' ) ) ;        
-        $this->assertTrue( $ac->isLoggedIn() ) ;
+        $ac = ApiClient::withTestHandler($handlerStack);
+        $this->assertFalse($ac->isLoggedIn()) ;
+        $this->assertTrue($ac->login('test', 'test')) ;
+        $this->assertTrue($ac->isLoggedIn()) ;
 
 
         $upload = tmpfile();
         $path = stream_get_meta_data($upload)['uri'];
       
 
-        $this->assertTrue( $ac->postBeitrag( "2441967", "Hallo", [ ['name' => 'test.txt','path' => $path] ] ) );        
+        $this->assertTrue($ac->postBeitrag("2441967", "Hallo", [ ['name' => 'test.txt','path' => $path] ]));
 
         $p = $ac->getPosteingang();
 
-        $this->assertEquals( 2, count($p->offen) );        
-        $this->assertEquals( 0, count($p->geschlossen) );        
+        $this->assertEquals(2, count($p->offen));
+        $this->assertEquals(0, count($p->geschlossen));
 
         fclose($upload);
-        unset( $_SESSION );
-
+        unset($_SESSION);
     }
-
-
-/*
-    
-    public function test_real(): void
-    {
-      
-         $ac = ApiClient::withConfiguredUrl();
-        $this->assertFalse( $ac->isLoggedIn() ) ;        
-        $this->assertTrue( $ac->login( 'klaus.kleber@web.de', 'bav12345' ) ) ;        
-        $this->assertTrue( $ac->isLoggedIn() ) ;        
-        $this->assertTrue( $ac->readPosteingang() ) ;        
-
-        $p = $ac->getPosteingang();
-
-
-        $upload1 = realpath( './composer.json' );       
-        $upload2 = realpath( './composer.lock' );       
-        $id = $p->offen[0]->id;
-
-
-        $postFiles = array();
-        array_push( $postFiles, [ 'name' => 'composer.json', 'path' => $upload1] );
-        array_push( $postFiles, [ 'name' => 'composer.lock', 'path' => $upload2] );
-        $this->assertTrue( $ac->postBeitrag( $id, "Hallo ich bin PHPUnit. nr.3", $postFiles ) );
-
-    
-
-        
-        unset( $_SESSION );
-
-    }
-
-    
-*/
-
 }

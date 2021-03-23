@@ -6,7 +6,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class BixieApiBundle extends Bundle
 {
-    
 }
-
-?>

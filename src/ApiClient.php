@@ -1,13 +1,11 @@
 <?php declare(strict_types=1);
 namespace pcak\BixieApi;
 
-
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 
-
-class ApiClient 
+class ApiClient
 {
     const base_url = 'https://api.bixie.cloud/v1/';
     //const base_url = 'https://staging-api.bixie.cloud/v1/';
@@ -22,50 +20,59 @@ class ApiClient
   
 
 
-    public static function withConfiguredUrl() {
-
+    public static function withConfiguredUrl()
+    {
         $url = getenv('BIXIE_API_BASE_URL');
 
-        if( $url === false )
+        if ($url === false) {
             $url = self::base_url;
+        }
 
 
         $instance = new self();
         $instance->client = new \GuzzleHttp\Client(['base_uri' => $url]);
 
-        if( !isset($_SESSION) )
+        if (!isset($_SESSION)) {
             $_SESSION = array();
+        }
 
 
-        if( isset($_SESSION[self::session_token_key])) 
+        if (isset($_SESSION[self::session_token_key])) {
             $instance->token = $_SESSION['bixie_api_token'];
+        }
 
-        if( isset($_SESSION[self::session_zusagen_key])) 
+        if (isset($_SESSION[self::session_zusagen_key])) {
             $instance->zusagen = $_SESSION[self::session_zusagen_key];
+        }
 
-        if( isset($_SESSION[self::session_posteingang_key])) 
+        if (isset($_SESSION[self::session_posteingang_key])) {
             $instance->posteingang = $_SESSION[self::session_posteingang_key];
+        }
 
 
         return $instance;
     }
 
-    public static function withTestHandler( $handlerStack ) {
-
+    public static function withTestHandler($handlerStack)
+    {
         $instance = new self();
         $instance->client = new \GuzzleHttp\Client(['handler' => $handlerStack]);
 
-        if( !isset($_SESSION) )
+        if (!isset($_SESSION)) {
             $_SESSION = array();
+        }
 
-        if( isset($_SESSION[self::session_token_key])) 
+        if (isset($_SESSION[self::session_token_key])) {
             $instance->token = $_SESSION[self::session_token_key];
+        }
 
-        if( isset($_SESSION[self::session_zusagen_key])) 
+        if (isset($_SESSION[self::session_zusagen_key])) {
             $instance->zusagen = $_SESSION[self::session_zusagen_key];
+        }
 
-        if( isset($_SESSION[self::session_posteingang_key])) 
+        if (isset($_SESSION[self::session_posteingang_key])) {
             $instance->posteingang = $_SESSION[self::session_posteingang_key];
+        }
 
 
         return $instance;
@@ -74,49 +81,49 @@ class ApiClient
  
     public function updateFromSession()
     {
-        if( !isset($_SESSION) )
+        if (!isset($_SESSION)) {
             $_SESSION = array();
+        }
 
-        if( isset($_SESSION[self::session_token_key])) 
+        if (isset($_SESSION[self::session_token_key])) {
             $instance->token = $_SESSION[self::session_token_key];
+        }
 
-        if( isset($_SESSION[self::session_zusagen_key])) 
+        if (isset($_SESSION[self::session_zusagen_key])) {
             $instance->zusagen = $_SESSION[self::session_zusagen_key];
+        }
 
-        if( isset($_SESSION[self::session_posteingang_key])) 
+        if (isset($_SESSION[self::session_posteingang_key])) {
             $instance->posteingang = $_SESSION[self::session_posteingang_key];
-
+        }
     }
 
 
     public function isLoggedIn()
-    {                 
-        return !empty( $this->token );
+    {
+        return !empty($this->token);
     }
 
-    public function login( String $username, String $password )
+    public function login(String $username, String $password)
     {
         $body = array(
             'username'    =>  $username,
             'password'    =>  $password );
 
        
-        $response = NULL;
+        $response = null;
         try {
-
-            $response = $this->client->post( '/v1/token', [
-                'body' => json_encode( $body ),
-                'headers' => ['Content-Type' => 'application/json']                
-            ] );
-    
+            $response = $this->client->post('/v1/token', [
+                'body' => json_encode($body),
+                'headers' => ['Content-Type' => 'application/json']
+            ]);
         } catch (ClientException | ServerException $e) {
-            error_log( $e->getMessage() );
-            $this->token = '';            
+            error_log($e->getMessage());
+            $this->token = '';
             return false;
         }
      
-        if( $response->getStatusCode() == 200 )
-        {
+        if ($response->getStatusCode() == 200) {
             $this->token = (string) $response->getBody();
             $_SESSION[self::session_token_key] = $this->token;
             return true;
@@ -129,12 +136,12 @@ class ApiClient
 
     public function needZusagenUpdate()
     {
-        return !isset( $this->zusagen );
+        return !isset($this->zusagen);
     }
 
     public function needPosteingangUpdate()
     {
-        return !isset( $this->posteingang );
+        return !isset($this->posteingang);
     }
 
 
@@ -151,64 +158,61 @@ class ApiClient
 
     public function readZusagen()
     {
-        if( !$this->isLoggedIn() )
-            return false;
-
-        $response = NULL;
-        try {
-
-            $response = $this->client->get( '/v1/zusagen', [
-                'headers' => ['Authorization' => 'Bearer ' . $this->token]
-            ] );
-    
-        } catch (ClientException | ServerException $e) {                      
-            error_log( $e->getMessage() );
+        if (!$this->isLoggedIn()) {
             return false;
         }
 
-        if( $response->getStatusCode() == 200 )
-        {
+        $response = null;
+        try {
+            $response = $this->client->get('/v1/zusagen', [
+                'headers' => ['Authorization' => 'Bearer ' . $this->token]
+            ]);
+        } catch (ClientException | ServerException $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+
+        if ($response->getStatusCode() == 200) {
             $body = (string) $response->getBody();
-            $this->zusagen = json_decode( $body );
+            $this->zusagen = json_decode($body);
             return true;
         }
 
-        return false;        
+        return false;
     }
 
 
     public function readPosteingang()
     {
-        if( !$this->isLoggedIn() )
-            return false;
-
-        $response = NULL;
-        try {
-
-            $response = $this->client->get( '/v1/posteingang', [
-                'headers' => ['Authorization' => 'Bearer ' . $this->token]
-            ] );
-    
-        } catch (ClientException | ServerException $e) {                      
-            error_log( $e->getMessage() );
+        if (!$this->isLoggedIn()) {
             return false;
         }
 
-        if( $response->getStatusCode() == 200 )
-        {
+        $response = null;
+        try {
+            $response = $this->client->get('/v1/posteingang', [
+                'headers' => ['Authorization' => 'Bearer ' . $this->token]
+            ]);
+        } catch (ClientException | ServerException $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+
+        if ($response->getStatusCode() == 200) {
             $body = (string) $response->getBody();
-            $this->posteingang = json_decode( $body );
+            $this->posteingang = json_decode($body);
             return true;
         }
 
-        return false;        
+        return false;
     }
 
 
-    public function postBeitrag( String $ticket_id, String $text, array $files = NULL )
+    public function postBeitrag(String $ticket_id, String $text, array $files = null)
     {
-        if( !$this->isLoggedIn() )
+        if (!$this->isLoggedIn()) {
             return false;
+        }
 
 
         $multipart = array();
@@ -221,43 +225,35 @@ class ApiClient
             'contents' => $text
         ];
         
-        if( isset( $files ) )
-        {
-            foreach( $files as $fileDescriptor )
+        if (isset($files)) {
+            foreach ($files as $fileDescriptor) {
                 $multipart[] = [
                     'name'     => $fileDescriptor['name'],
                     'filename'     => $fileDescriptor['name'],
-                    'contents' => fopen( $fileDescriptor['path'], 'r' )
+                    'contents' => fopen($fileDescriptor['path'], 'r')
                 ];
+            }
         }
 
       
 
-        $response = NULL;
+        $response = null;
         try {
-            $response = $this->client->request( 'POST', '/v1/beitrag', [
+            $response = $this->client->request('POST', '/v1/beitrag', [
                 'headers' => ['Authorization' => 'Bearer ' . $this->token],
                 'multipart' => $multipart
-            ] );
-    
-        } catch (ClientException | ServerException $e) {                      
-            error_log( $e->getMessage() );
+            ]);
+        } catch (ClientException | ServerException $e) {
+            error_log($e->getMessage());
             return false;
         }
 
-        if( $response->getStatusCode() == 200 )
-        {
+        if ($response->getStatusCode() == 200) {
             $body = (string) $response->getBody();
-            $this->posteingang = json_decode( $body );
+            $this->posteingang = json_decode($body);
             return true;
         }
 
-        return false;                 
-
+        return false;
     }
-
 }
-
-
-
-?>

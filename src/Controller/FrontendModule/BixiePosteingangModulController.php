@@ -18,20 +18,24 @@ class BixiePosteingangModulController extends AbstractFrontendModuleController
 
     protected function getResponse(Template $template, ModuleModel $model, Request $request): ?Response
     {
-        if( is_null( $this->client ) )
+        if (is_null($this->client)) {
             $this->client = \pcak\BixieApi\ApiClient::withConfiguredUrl();
-        else
+        } else {
             $this->client->updateFromSession();
+        }
 
 
-        if( !$this->client->isLoggedIn() )
+        if (!$this->client->isLoggedIn()) {
             return $template->getResponse();
+        }
 
-        if( $this->client->needPosteingangUpdate() )
+        if ($this->client->needPosteingangUpdate()) {
             $this->client->readPosteingang();
+        }
 
-        if( $this->client->needPosteingangUpdate() )
+        if ($this->client->needPosteingangUpdate()) {
             return $template->getResponse();
+        }
 
         $z = $this->client->getPosteingang();
 
@@ -44,5 +48,3 @@ class BixiePosteingangModulController extends AbstractFrontendModuleController
         return $template->getResponse();
     }
 }
-
-?>
