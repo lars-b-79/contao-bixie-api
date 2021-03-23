@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\ServerException;
 class ApiClient 
 {
     const base_url = 'https://api.bixie.cloud/v1/';
+    //const base_url = 'https://staging-api.bixie.cloud/v1/';
     const session_token_key = 'bixie_api_token';
     const session_zusagen_key = 'bixie_api_zusagen';
     const session_posteingang_key = 'bixie_api_posteingang';
@@ -222,10 +223,11 @@ class ApiClient
         
         if( isset( $files ) )
         {
-            foreach( $files as $filepath )
+            foreach( $files as $fileDescriptor )
                 $multipart[] = [
-                    'name'     => basename( $filepath ),
-                    'contents' => fopen( $filepath, 'r' )
+                    'name'     => $fileDescriptor['name'],
+                    'filename'     => $fileDescriptor['name'],
+                    'contents' => fopen( $fileDescriptor['path'], 'r' )
                 ];
         }
 

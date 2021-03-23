@@ -1,0 +1,25 @@
+<div class="bixie-api-login-status-module"> 
+  <h4>Posteingang</h4>  
+  
+  <ul>
+     
+    <li><?= $this->vorname ?> <?= $this->name ?> </li>
+     <li>Offen <?= count($this->offen) ?>
+      <ul style="text-indent: 2em;">
+        <?php foreach ($this->offen as $p): ?>
+          <li><a href="{{link_url::221}}?pid=<?= $p->id ?>"><?= $p->id ?></a></li>
+        <?php endforeach; ?>
+      </ul>
+    </li>
+
+    <li>Geschlossen <?= count($this->geschlossen) ?>
+      <ul style="text-indent: 2em;">
+        <?php foreach ($this->geschlossen as $p): ?>
+          <li><a href="{{link_url::221}}?pid=<?= $p->id ?>"><?= $p->id ?></a></li>
+        <?php endforeach; ?>
+      </ul>
+    </li>
+     
+     
+  </ul>
+</div>

@@ -11,9 +11,10 @@ use Contao\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class BixieLoginStatusModulController extends AbstractFrontendModuleController
+class BixiePosteingangModulController extends AbstractFrontendModuleController
 {
     private ?\pcak\BixieApi\ApiClient $client = null;
+
 
     protected function getResponse(Template $template, ModuleModel $model, Request $request): ?Response
     {
@@ -22,7 +23,23 @@ class BixieLoginStatusModulController extends AbstractFrontendModuleController
         else
             $this->client->updateFromSession();
 
-        $template->loginStatus = $this->client->isLoggedIn() ? 'eingeloggt' :  'nicht eingeloggt';         
+
+        if( !$this->client->isLoggedIn() )
+            return $template->getResponse();
+
+        if( $this->client->needPosteingangUpdate() )
+            $this->client->readPosteingang();
+
+        if( $this->client->needPosteingangUpdate() )
+            return $template->getResponse();
+
+        $z = $this->client->getPosteingang();
+
+        $template->vorname = $z->vorname;
+        $template->name = $z->name;
+        $template->username = $z->username;
+        $template->offen = $z->offen;
+        $template->geschlossen = $z->geschlossen;
 
         return $template->getResponse();
     }

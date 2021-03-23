@@ -1,0 +1,34 @@
+<div class="bixie-api-login-status-module"> 
+  <h4>Ticket</h4>  
+  
+  <ul>
+     
+    <li><?= $this->vorname ?> <?= $this->name ?> </li>
+    <li><?= $this->ticket->erstelltDatum ?></li>
+     
+  </ul>
+
+
+  <ul>
+     
+    <?php foreach ($this->ticket->beitraege as $b): ?>
+      <li>[<?= $b->erstellt ?> <?= $b->author ?>]: <?= $b->text ?>
+
+        <ul style="text-indent: 2em;">
+     
+          <?php foreach ($b->files as $f): ?>
+            <li><?= $f->upload ?> <?= $f->name ?>
+            </li>
+          <?php endforeach; ?>
+         
+           
+        </ul>
+      
+
+      </li>
+    <?php endforeach; ?>
+   
+     
+  </ul>
+
+</div>

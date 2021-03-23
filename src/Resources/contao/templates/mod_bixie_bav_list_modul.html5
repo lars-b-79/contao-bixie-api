@@ -1,7 +1,7 @@
 <div class="bixie-api-login-status-module"> 
     <ul>
       <?php foreach ($this->zusagen as $z): ?>
-        <li><div><?= $z->df ?> / <?= $z->art ?> / <?= $z->name ?></div></li>
+        <li><a href="{{link_url::221}}?zid=<?= $z->id ?>"><?= $z->df ?> / <?= $z->art ?> / <?= $z->name ?></a></li>
       <?php endforeach; ?>
   </ul>
 </div>
