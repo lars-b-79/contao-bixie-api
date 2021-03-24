@@ -1,10 +1,12 @@
 {
     "name": "pcak/contao-bixie-api",
     "description": "Frontendmodule und Client f\u0000r die Anbindung der bixie API.",
+    "keywords":["contao","bixie"],
     "type": "contao-bundle",
     "license": "LGPL-3.0-or-later",
     "require": {
-        "guzzlehttp/guzzle": "7.2.0"
+        "guzzlehttp/guzzle": "7.2.0",
+        "contao/core-bundle": "^4.9"
     },
     "conflict": {
         "contao/core": "*",
@@ -19,7 +21,8 @@
     "authors": [
         {
             "name": "Lars Braunholz",
-            "email": "l.braunholz@pcak.de"
+            "email": "l.braunholz@pcak.de",
+            "role":"Developer"
         }
     ],
     "autoload": {
