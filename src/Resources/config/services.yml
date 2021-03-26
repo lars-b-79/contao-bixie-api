@@ -5,7 +5,13 @@ services:
         public: false
     pcak\BixieApi\EventListener\BixieApiLoginFormListener:
         public: true
+    pcak\BixieApi\EventListener\BixieApiLogoutFormListener:
+        public: true
     pcak\BixieApi\EventListener\BixieApiPostBeitragFormListener:
+        public: true
+    pcak\BixieApi\EventListener\BixieApiUpdatePosteingangFormListener:
+        public: true
+    pcak\BixieApi\EventListener\BixieApiOpenTicketFormListener:
         public: true
     pcak\BixieApi\Controller\FrontendModule\BixieLoginStatusModulController:
         tags:

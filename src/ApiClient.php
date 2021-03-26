@@ -55,7 +55,7 @@ class ApiClient
 
 
         if (isset($_SESSION[self::session_token_key])) {
-            $instance->token = $_SESSION['bixie_api_token'];
+            $instance->token = $_SESSION[self::session_token_key];
         }
 
         if (isset($_SESSION[self::session_zusagen_key])) {
@@ -257,6 +257,58 @@ class ApiClient
         $response = null;
         try {
             $response = $this->client->request('POST', '/v1/beitrag', [
+                'headers' => ['Authorization' => 'Bearer ' . $this->token],
+                'multipart' => $multipart
+            ]);
+        } catch (ClientException | ServerException $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+
+        if ($response->getStatusCode() == 200) {
+            $body = (string) $response->getBody();
+            $this->posteingang = json_decode($body);
+            return true;
+        }
+
+        return false;
+    }
+
+
+
+    
+    public function openTicket(String $betreff, String $text, array $files = null)
+    {
+        if (!$this->isLoggedIn()) {
+            return false;
+        }
+
+
+        $multipart = array();
+        $multipart[] = [
+            'name'     => 'betreff',
+            'contents' => $betreff
+        ];
+        $multipart[] = [
+            'name'     => 'text',
+            'contents' => $text
+        ];
+        
+        if (isset($files)) {
+            foreach ($files as $fileDescriptor) {
+                $multipart[] = [
+                    'name'     => $fileDescriptor['name'],
+                    'filename'     => $fileDescriptor['name'],
+                    'contents' => fopen($fileDescriptor['path'], 'r')
+                ];
+            }
+        }
+
+      
+
+        $response = null;
+        try {
+            $response = $this->client->request('POST', '/v1/ticket', [
                 'headers' => ['Authorization' => 'Bearer ' . $this->token],
                 'multipart' => $multipart
             ]);
