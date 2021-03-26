@@ -27,7 +27,7 @@ class BixieApiOpenTicketFormListener
         array $labels,
         Form $form
     ): void {
-        if (isset($form->formID) && $form->formID == self::form_id) {            
+        if (isset($form->formID) && $form->formID == self::form_id) {
             $this->post($submittedData[ self::field_betreff ], $submittedData[ self::field_text ], $files[ self::field_upload ]);
         }
     }
@@ -46,7 +46,7 @@ class BixieApiOpenTicketFormListener
             array_push($postFiles, [ 'name' => $files['name'], 'path' => $files['tmp_name']]);
         }
 
-        error_log( "open ticket" );
+        error_log("open ticket");
         $this->client->openTicket($betreff, $text, $postFiles);
     }
 }

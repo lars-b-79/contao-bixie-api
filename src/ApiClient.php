@@ -27,15 +27,15 @@ class ApiClient
         $parameter_file_path = $rootDir . '/config/parameters.yml';
 
         $replace = (PHP_OS_FAMILY === "Windows") ? '\\' : '/';
-        $parameter_file_path = str_replace( ['\\', '/'], $replace, $parameter_file_path);
+        $parameter_file_path = str_replace(['\\', '/'], $replace, $parameter_file_path);
 
         
-        if( file_exists( $parameter_file_path ) )
-        {
-            $parameters = Yaml::parse( file_get_contents($parameter_file_path));
+        if (file_exists($parameter_file_path)) {
+            $parameters = Yaml::parse(file_get_contents($parameter_file_path));
 
-            if( array_key_exists( 'bixie-api-base-url', $parameters['parameters'] ) )
+            if (array_key_exists('bixie-api-base-url', $parameters['parameters'])) {
                 return $parameters['parameters']['bixie-api-base-url'];
+            }
         }
 
         return self::base_url;

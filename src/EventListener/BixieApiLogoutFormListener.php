@@ -21,14 +21,10 @@ class BixieApiLogoutFormListener
         array $labels,
         Form $form
     ): void {
-       
-
         if (isset($form->formID) && $form->formID == self::form_id) {
-            unset(  $_SESSION[ApiClient::session_token_key] ); 
-            unset(  $_SESSION[ApiClient::session_zusagen_key] ); 
-            unset(  $_SESSION[ApiClient::session_posteingang_key] ); 
+            unset($_SESSION[ApiClient::session_token_key]);
+            unset($_SESSION[ApiClient::session_zusagen_key]);
+            unset($_SESSION[ApiClient::session_posteingang_key]);
         }
     }
-
-  
 }

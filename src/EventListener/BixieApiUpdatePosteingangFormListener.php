@@ -23,7 +23,7 @@ class BixieApiUpdatePosteingangFormListener
         array $labels,
         Form $form
     ): void {
-        if (isset($form->formID) && $form->formID == self::form_id) {            
+        if (isset($form->formID) && $form->formID == self::form_id) {
             $this->update();
         }
     }
