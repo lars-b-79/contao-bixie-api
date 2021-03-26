@@ -102,6 +102,18 @@ components:
                     items:
                         type: string
                         format: binary
+        NeuesTicket:
+            type: object
+            properties:
+                betreff:
+                    type: string
+                text:
+                    type: string
+                filename:
+                    type: array
+                    items:
+                        type: string
+                        format: binary
         Ticketbeitrag:
             type: object
             properties:
@@ -300,5 +312,24 @@ paths:
                     multipart/form-data:
                         schema:
                             $ref: '#/components/schemas/NeuerTicketBeitrag'
+    /ticket:
+        post:
+            security:
+                -   bearerAuth: [ ]
+            summary: Macht ein neues Ticket auf
+            operationId: openTicket
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Posteingang'
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            $ref: '#/components/schemas/NeuesTicket'
 
 
