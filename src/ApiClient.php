@@ -4,6 +4,7 @@ namespace pcak\BixieApi;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use Symfony\Component\Yaml\Yaml;
 
 class ApiClient
 {
@@ -20,15 +21,31 @@ class ApiClient
   
 
 
-    public static function withConfiguredUrl()
+    public static function getApiUrl()
     {
-        $url = getenv('BIXIE_API_BASE_URL');
+        $rootDir = \System::getContainer()->getParameter('kernel.project_dir');
+        $parameter_file_path = $rootDir . '/config/parameters.yml';
 
-        if ($url === false) {
-            $url = self::base_url;
+        $replace = (PHP_OS_FAMILY === "Windows") ? '\\' : '/';
+        $parameter_file_path = str_replace( ['\\', '/'], $replace, $parameter_file_path);
+
+        
+        if( file_exists( $parameter_file_path ) )
+        {
+            $parameters = Yaml::parse( file_get_contents($parameter_file_path));
+
+            if( array_key_exists( 'bixie-api-base-url', $parameters['parameters'] ) )
+                return $parameters['parameters']['bixie-api-base-url'];
         }
 
+        return self::base_url;
+    }
 
+
+    public static function withConfiguredUrl()
+    {
+        $url = self::getApiUrl();
+      
         $instance = new self();
         $instance->client = new \GuzzleHttp\Client(['base_uri' => $url]);
 
