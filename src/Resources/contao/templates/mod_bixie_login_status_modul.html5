@@ -1,6 +1,0 @@
-<div class="bixie-api-login-status-module"> 
-    Login: <?= $this->loginStatus ?>    
-</div>
-
-
-

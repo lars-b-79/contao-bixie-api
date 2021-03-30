@@ -1,0 +1,14 @@
+<div class="bixie-api-login-status-module"> 
+  <h4>Zusage</h4>  
+  
+
+  <ul>
+     
+     <li><?= $this->vorname ?> <?= $this->name ?> </li>
+     <li><?= $this->selectedZusage->df ?></li>
+     <li><?= $this->selectedZusage->art ?></li>
+     <li><?= $this->selectedZusage->name ?></li>
+     <li><?= $this->selectedZusage->lb ?></li>
+     
+  </ul>
+</div>

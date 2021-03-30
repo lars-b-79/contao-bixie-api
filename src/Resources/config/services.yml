@@ -12,37 +12,13 @@ services:
     pcak\BixieApi\EventListener\BixieApiUpdatePosteingangFormListener:
         public: true
     pcak\BixieApi\EventListener\BixieApiOpenTicketFormListener:
-        public: true
-    pcak\BixieApi\Controller\FrontendModule\BixieLoginStatusModulController:
+        public: true       
+    pcak\BixieApi\Controller\FrontendModule\BixieModulController:
         tags:
             -
                 name: contao.frontend_module
                 category: miscellaneous
-                template: mod_bixie_login_status_modul
-    pcak\BixieApi\Controller\FrontendModule\BixieBavListModulController:
-        tags:
-            -
-                name: contao.frontend_module
-                category: miscellaneous
-                template: mod_bixie_bav_list_modul
-    pcak\BixieApi\Controller\FrontendModule\BixieBavModulController:
-        tags:
-            -
-                name: contao.frontend_module
-                category: miscellaneous
-                template: mod_bixie_bav_modul
-    pcak\BixieApi\Controller\FrontendModule\BixiePosteingangModulController:
-        tags:
-            -
-                name: contao.frontend_module
-                category: miscellaneous
-                template: mod_bixie_posteingang_modul
-    pcak\BixieApi\Controller\FrontendModule\BixieTicketModulController:
-        tags:
-            -
-                name: contao.frontend_module
-                category: miscellaneous
-                template: mod_bixie_ticket_modul
+
  
  
 

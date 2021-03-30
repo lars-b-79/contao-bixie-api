@@ -1,0 +1,16 @@
+<div class="bixie-api-login-status-module"> 
+    Login: <?= $this->loginStatus ?>    
+</div>
+
+<?php
+  $this->dumpTemplateVars();
+  $GLOBALS['TL_BODY'][] = '
+  <style>
+    pre.sf-dump .sf-dump-key {
+        color: beige;
+    }
+  </style>
+';
+?>
+
+

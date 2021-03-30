@@ -103,15 +103,15 @@ class ApiClient
         }
 
         if (isset($_SESSION[self::session_token_key])) {
-            $instance->token = $_SESSION[self::session_token_key];
+            $this->token = $_SESSION[self::session_token_key];
         }
 
         if (isset($_SESSION[self::session_zusagen_key])) {
-            $instance->zusagen = $_SESSION[self::session_zusagen_key];
+            $this->zusagen = $_SESSION[self::session_zusagen_key];
         }
 
         if (isset($_SESSION[self::session_posteingang_key])) {
-            $instance->posteingang = $_SESSION[self::session_posteingang_key];
+            $this->posteingang = $_SESSION[self::session_posteingang_key];
         }
     }
 
