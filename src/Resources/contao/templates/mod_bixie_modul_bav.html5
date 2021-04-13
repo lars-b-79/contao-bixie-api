@@ -5,6 +5,7 @@
   <ul>
      
      <li><?= $this->vorname ?> <?= $this->name ?> </li>
+     <li><?= $this->zusage_id ?></li>
      <li><?= $this->selectedZusage->df ?></li>
      <li><?= $this->selectedZusage->art ?></li>
      <li><?= $this->selectedZusage->name ?></li>

@@ -50,6 +50,8 @@ class BixieModulController extends AbstractFrontendModuleController
 
 
         $zusage_id = $request->query->get('zid');
+        $template->zusage_id = $zusage_id;
+        
         if (isset($zusage_id)) {
             foreach ($zusagen as $z0) {
                 if ($z0->id == $zusage_id) {
@@ -62,6 +64,7 @@ class BixieModulController extends AbstractFrontendModuleController
 
 
         $prozess_id = $request->query->get('pid');
+        $template->prozess_id = $prozess_id;
         if (isset($prozess_id)) {
             foreach ($posteingang->offen as $t0) {
                 if ($t0->id == $prozess_id) {
