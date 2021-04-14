@@ -1,15 +1,157 @@
-<div class="bixie-api-login-status-module"> 
-  <h4>Zusage</h4>  
-  
+<div style="border:1px solid #111;margin-bottom: 50px;">
+  <div style="width:100%;">
+    <h4 style="text-align: center;"><?= $this->selectedZusage->name ?></h4>
+  </div>
 
-  <ul>
-     
-     <li><?= $this->vorname ?> <?= $this->name ?> </li>
-     <li><?= $this->zusage_id ?></li>
-     <li><?= $this->selectedZusage->df ?></li>
-     <li><?= $this->selectedZusage->art ?></li>
-     <li><?= $this->selectedZusage->name ?></li>
-     <li><?= $this->selectedZusage->lb ?></li>
-     
-  </ul>
+
+  <div style="width:60%;margin:0 20%;padding:10px;display:flex;border:1px solid #111;flex-direction:column;">
+    <div style="width:100%;">
+      <h4>Steckbrief</h4>
+    </div>
+    <div style="width:100%;display:flex;">
+      <div style="width:50%;display: flex;flex-direction:column;">
+      
+        <span>Typ <?= $this->selectedZusage->df ?></span>
+        <span>Typ <?= $this->selectedZusage->art ?></span>
+        <?php if ( isset($this->selectedZusage->kennzahl)): ?>
+          <span>Kennzahl <?= $this->selectedZusage->kennzahl ?></span>
+        <?php endif; ?>
+      
+      </div>
+      <div style="width:50%;display: flex;flex-direction:column;">
+        <span>Versorgungsträger <?= $this->selectedZusage->vt ?></span>
+        <?php if ( isset($this->selectedZusage->vn)): ?>
+        <span>Vertragsnummer <?= $this->selectedZusage->vn ?></span>
+        <?php endif; ?>
+        <?php if ( isset($this->selectedZusage->vu)): ?>
+        <span>Gesellschaft <?= $this->selectedZusage->vu ?></span>
+        <?php endif; ?>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div style="width:100%;display:flex;justify-content:center;">
+      <a style="padding: 4px;background-color: indigo;color: white;margin: 3px;cursor:pointer;" onclick="$('.tabs').hide();$('#bixie_div_leistungen').show()">Leistungen</a>
+      <a style="padding: 4px;background-color: indigo;color: white;margin: 3px;cursor:pointer;" onclick="$('.tabs').hide();$('#bixie_div_beitraege').show()">Beiträge</a>
+      <a style="padding: 4px;background-color: indigo;color: white;margin: 3px;cursor:pointer;" onclick="$('.tabs').hide();$('#bixie_div_bausteine').show()">Bausteine</a>
+      <a style="padding: 4px;background-color: indigo;color: white;margin: 3px;cursor:pointer;" onclick="$('.tabs').hide();$('#bixie_div_dokumente').show()">Dokumente</a>
+  </div>
+
+  <div style="width:100%;display:block;" id="bixie_div_leistungen" class="tabs">
+    <div style="width:100%;display:flex;flex-direction:column;">
+      <span style="font-size: 16px;text-align:center;">Dokumente</span>
+      <span style="font-size: 16px;text-align:center;">Leistungsbeginn <?= $this->selectedZusage->lb ?></span>
+      <div style="width:100%;display:flex;margin-top: 10px;">
+
+        <div style="width:50%;display: flex;flex-direction:column;">
+          <span style="font-size: 16px;">garantierter Leistungen</span>
+          <?php if ( isset($this->selectedZusage->alter)): ?>
+            <span><?= $this->selectedZusage->alter->zahlungsart ?> bei Pensionierung <?= $this->selectedZusage->alter->garantiert ?>
+              <?= $this->selectedZusage->alter->option ? ( ($this->selectedZusage->alter->zahlungsart == 'Rente') ? ' (Kapitaloption)' : ' (Rentenoption)' ) : '' ?>
+            </span>
+          <?php endif; ?>
+          <?php if ( isset($this->selectedZusage->tod)): ?>
+            <span><?= $this->selectedZusage->tod->zahlungsart ?> bei Tod <?= $this->selectedZusage->tod->garantiert ?>
+              <?= $this->selectedZusage->tod->option ? ( ($this->selectedZusage->tod->zahlungsart == 'Rente') ? ' (Kapitaloption)' : ' (Rentenoption)' ) : '' ?>
+            </span>
+          <?php endif; ?>
+          <?php if ( isset($this->selectedZusage->bu)): ?>
+            <span><?= $this->selectedZusage->bu->zahlungsart ?> bei BU <?= $this->selectedZusage->bu->garantiert ?>
+              <?= $this->selectedZusage->bu->option ? ( ($this->selectedZusage->bu->zahlungsart == 'Rente') ? ' (Kapitaloption)' : ' (Rentenoption)' ) : '' ?>
+            </span>
+          <?php endif; ?>
+
+        </div>
+        <div style="width:50%;display: flex;flex-direction:column;">
+
+          <span style="font-size: 16px;">prognostizierte Leistungen</span>
+          <?php if ( isset($this->selectedZusage->alter)): ?>
+            <span><?= $this->selectedZusage->alter->zahlungsart ?> bei Pensionierung <?= $this->selectedZusage->alter->prognostiziert ?>
+              <?= $this->selectedZusage->alter->option ? ( ($this->selectedZusage->alter->zahlungsart == 'Rente') ? ' (Kapitaloption)' : ' (Rentenoption)' ) : '' ?>
+            </span>
+          <?php endif; ?>
+          <?php if ( isset($this->selectedZusage->tod)): ?>
+            <span><?= $this->selectedZusage->tod->zahlungsart ?> bei Tod <?= $this->selectedZusage->tod->prognostiziert ?>
+              <?= $this->selectedZusage->tod->option ? ( ($this->selectedZusage->tod->zahlungsart == 'Rente') ? ' (Kapitaloption)' : ' (Rentenoption)' ) : '' ?>
+            </span>
+          <?php endif; ?>
+          <?php if ( isset($this->selectedZusage->bu)): ?>
+            <span><?= $this->selectedZusage->bu->zahlungsart ?> bei BU <?= $this->selectedZusage->bu->prognostiziert ?>
+              <?= $this->selectedZusage->bu->option ? ( ($this->selectedZusage->bu->zahlungsart == 'Rente') ? ' (Kapitaloption)' : ' (Rentenoption)' ) : '' ?>
+            </span>
+          <?php endif; ?>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div style="width:100%;display:none;" id="bixie_div_beitraege" class="tabs">
+    
+    <div style="width:100%;display:flex;flex-direction:column;">
+      <span style="font-size: 16px;text-align:center;">Beiträge</span>
+      <span style="font-size: 16px;text-align:center;">Gesamtbeitrag <?= $this->selectedZusage->gb ?></span>
+      <div style="width:100%;display:flex;margin-top: 10px;flex-direction:column;">
+
+        <?php foreach ($this->selectedZusage->beitraege as $b): ?>        
+
+        <div style="width:60%; margin: 0 20%;display:flex;justify-content:space-between;">
+          <span ><?= $b->name ?></span>
+          <span ><?= $b->finanzierung ?></span>
+          <span ><?= $b->zahlweise ?></span>
+          <span ><?= $b->beitrag ?></span>
+        </div>
+
+        <?php endforeach; ?>
+
+
+      </div>
+    </div>
+  </div>
+  <div style="width:100%;display:none;" id="bixie_div_bausteine" class="tabs">
+    <div style="width:100%;display:flex;flex-direction:column;">
+      <span style="font-size: 16px;text-align:center;">Bausteine</span>
+      <div style="width:100%;display:flex;margin-top: 10px;flex-direction:column;">
+
+        <?php foreach ($this->selectedZusage->bausteine as $b): ?>        
+
+        <div style="width:50%; margin: 0 25%;display:flex;justify-content:space-between;">
+          <span ><?= $b->name ?></span>
+          <span ><?= $b->stichtag ?></span>
+          <span ><?= $b->beitrag ?></span>
+          <span ><?= $b->leistung ?></span>
+        </div>
+
+        <?php endforeach; ?>
+
+
+      </div>
+    </div>
+  </div>
+  <div style="width:100%;display:none;" id="bixie_div_dokumente" class="tabs">
+    <div style="width:100%;display:flex;flex-direction:column;">
+      <span style="font-size: 16px;text-align:center;">Dokumente</span>
+      <div style="width:100%;display:flex;margin-top: 10px;flex-direction:column;">
+
+        <?php foreach ($this->selectedZusage->tags as $tag): ?>        
+
+        <div style="width:50%; margin: 10px 25%;display:flex;flex-direction:column;align-items: center;">
+          <span style="font-size: 16px;text-align:center;"><?= $tag->name ?></span>
+        <?php foreach ($tag->files as $file): ?>        
+          <a href="<?= $file->link ?>"><?= $file->name ?></a>
+        <?php endforeach; ?>
+        </div>
+
+        <?php endforeach; ?>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
 </div>
+

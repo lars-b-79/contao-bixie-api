@@ -1,30 +1,77 @@
-<div class="bixie-api-login-status-module"> 
-  <h4>Posteingang</h4>  
-  
-  <ul>
-     
-    <li><?= $this->vorname ?> <?= $this->name ?> </li>
-    
-    <?php if ( isset( $this->offen ) ): ?>
-     <li>Offen <?= count($this->offen) ?>
-      <ul style="text-indent: 2em;">
-        <?php foreach ($this->offen as $p): ?>
-          <li><a href="{{link_url::221}}?pid=<?= $p->id ?>"><?= $p->id ?></a></li>
-        <?php endforeach; ?>
-      </ul>
-    </li>
-    <?php endif ?>
+<div> 
+  <h4 style="text-align: center;">Posteingang</h4>  
+  <div style="display:flex;width:100%;justify-content: space-between;"> 
+    <div style="display:flex;width:40%;flex-direction:column;"> 
+      <span style="text-align: center;font-size: 16px;">Offen</span>
+      <?php foreach ($this->offen as $p): ?>
+          <a style="border: 1px solid #333;padding: 6px;margin: 4px;display:flex;flex-direction:column;" 
+            href="{{link_url::221}}?pid=<?= $p->id ?>">
+            <?php if ( $p->abgeschlossen ): ?>
+              <span>Abgeschlossen am <?= $p->abgeschlossenDatum ?></span>
+              <?php else: ?>
+               <span>Offen seit <?= $p->erstelltDatum ?></span>
+             <?php endif ?>
+             <span style="font-size: 16px;font-weight: bold;"><?= $p->name ?></span>
+          </a>
+      <?php endforeach; ?>
 
-    <?php if ( isset( $this->geschlossen ) ): ?>
-    <li>Geschlossen <?= count($this->geschlossen) ?>
-      <ul style="text-indent: 2em;">
-        <?php foreach ($this->geschlossen as $p): ?>
-          <li><a href="{{link_url::221}}?pid=<?= $p->id ?>"><?= $p->id ?></a></li>
-        <?php endforeach; ?>
-      </ul>
-    </li>
-    <?php endif ?>
+      <?php foreach ($this->geschlossen as $p): ?>
+          <a style="border: 1px solid #333;padding: 6px;margin: 4px;display:flex;flex-direction:column;" 
+            href="{{link_url::221}}?pid=<?= $p->id ?>">
+            <?php if ( $p->abgeschlossen ): ?>
+              <span>Abgeschlossen am <?= $p->abgeschlossenDatum ?></span>
+              <?php else: ?>
+               <span>Offen seit <?= $p->erstelltDatum ?></span>
+             <?php endif ?>
+             <span style="font-size: 16px;font-weight: bold;"><?= $p->name ?></span>
+          </a>
+      <?php endforeach; ?>
+
+
+    </div>
+    <div style="display:flex;width:58%;flex-direction:column;"> 
+      <?php if ( isset( $this->selectedTicket ) ): ?>
+
+      <?php foreach ($this->selectedTicket->beitraege as $b): ?>
+
+          <div style="width: 100%;display:flex;border: 1px solid #333;padding: 6px;margin: 4px;">
+            <div style="width: 100%;display:flex;flex-direction:column;">    
+              <span><?= $b->author ?> am <?= $b->erstellt ?></span>
+              <span style="background-color: lightgray;padding: 5px;"><?= $b->text ?></span>
+              <div style="width: 100%;display:flex;"">    
+                <?php foreach ($b->files as $file): ?>
+                <a style="background-color: lightgray;padding: 3px;margin: 2px;" 
+                href="<?= $file->link ?>"><?= $file->name ?></a>
+                <?php endforeach; ?>
+              </div>
+             </div>
+          </div>
+
+      <?php endforeach; ?>
+
+
+      <form method="post" enctype="multipart/form-data">
+        <div class="formbody">
+                <input type="hidden" name="FORM_SUBMIT" value="auto_BixieApiPostBeitragForm">
+                <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+                <input type="hidden" name="MAX_FILE_SIZE" value="2048000">
+                              
+                         
+                  <textarea name="text" id="pb_ctrl_151" class="textarea" rows="4" cols="40"></textarea>
+                </div>
+    
+            <input type="file" name="upload" id="pb_ctrl_152" class="upload" accept=".jpg,.jpeg,.gif,.png,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx">
+          
+            <div class="widget widget-submit">        
+                  <button type="submit" id="pb_ctrl_153" class="submit">absenden</button>
+            </div>
+              </div>
+      </form>
+
+
      
-     
-  </ul>
+      <?php endif ?>
+    </div>
+  </div>
+
 </div>

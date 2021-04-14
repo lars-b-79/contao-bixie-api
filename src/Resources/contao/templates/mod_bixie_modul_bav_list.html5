@@ -1,7 +1,51 @@
-<div class="bixie-api-login-status-module"> 
-    <ul>
+<div style="display:flex;flex-direction:column;"> 
+    
       <?php foreach ($this->zusagen as $z): ?>
-        <li><a href="{{link_url::221}}?zid=<?= $z->id ?>"><?= $z->id ?> / <?= $z->df ?> / <?= $z->art ?> / <?= $z->name ?></a></li>
+      <div style="width:60%;margin:10px 20%;padding:10px;display:flex;border:1px solid #111;flex-direction:column;">
+        <div style="width:100%;text-align:center;">
+            <h4><?= $z->name ?></h4>
+            <span style="font-size: 2em;"><?= $z->df ?></span>
+        </div>
+
+        <div style="width:100%;display: flex;margin-top:20px;">
+
+          <div style="width:50%;display: flex;flex-direction:column;">
+            <h4>Steckbrief</h4>
+            <span>Typ <?= $z->art ?></span>
+            <?php if ( isset($z->kennzahl)): ?>
+              <span>Kennzahl <?= $z->kennzahl ?></span>
+            <?php endif; ?>
+            <span>Versorgungsträger <?= $z->vt ?></span>
+            <?php if ( isset($z->vn)): ?>
+            <span>Vertragsnummer <?= $z->vn ?></span>
+            <?php endif; ?>
+            <?php if ( isset($z->vu)): ?>
+            <span>Gesellschaft <?= $z->vu ?></span>
+            <?php endif; ?>
+          </div>
+          <div style="width:50%;display: flex;flex-direction:column;">
+            <h4>Leistungen</h4>
+            <span>Leistungsbeginn <?= $z->lb ?></span>
+            <span><?= $z->alter->zahlungsart ?> Alter <?= $z->alter->garantiert ?></span>
+
+            <?php if ( isset($z->tod)): ?>
+            <span><?= $z->tod->zahlungsart ?> bei Tod <?= $z->tod->garantiert ?></span>
+            <?php endif; ?>
+
+            <?php if ( isset($z->bu)): ?>
+            <span><?= $z->bu->zahlungsart ?> bei BU <?= $z->bu->garantiert ?></span>
+            <?php endif; ?>
+            
+
+          </div>
+
+        </div>
+        <a style="background:gray;padding:10px;width:20%;color:white;" href="{{link_url::221}}?zid=<?= $z->id ?>">öffnen</a>
+
+      </div>
+
+      
+       
       <?php endforeach; ?>
-  </ul>
+  
 </div>
