@@ -195,6 +195,31 @@ final class ApiClientTest extends TestCase
 
 
 
+
+    public function test_register(): void
+    {
+        $mock = new MockHandler([
+            new Response(200, [], 'WebToken'),
+            new Response(200, [])
+        ]);
+        
+        $handlerStack = HandlerStack::create($mock);
+        
+
+        $ac = ApiClient::withTestHandler($handlerStack);
+        $this->assertFalse($ac->isLoggedIn()) ;
+        $this->assertTrue($ac->login('test', 'test')) ;
+        $this->assertTrue($ac->isLoggedIn()) ;
+        $this->assertTrue($ac->register("test@test.de"));
+
+        
+        unset($_SESSION);
+    }
+
+
+
+
+
     public function test_openTicket_with_files_200(): void
     {
         $mock = new MockHandler([

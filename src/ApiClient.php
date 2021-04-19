@@ -151,6 +151,27 @@ class ApiClient
     }
 
 
+    public function register(String $email)
+    {
+        $body = array( 'email'    =>  $email );
+
+       
+        $response = null;
+        try {
+            $response = $this->client->post('/v1/register', [
+                'body' => json_encode($body),
+                'headers' => ['Content-Type' => 'application/json']
+            ]);
+        } catch (ClientException | ServerException $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+     
+        return true;
+    }
+
+
+
     public function needZusagenUpdate()
     {
         return !isset($this->zusagen);

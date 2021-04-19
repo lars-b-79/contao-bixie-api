@@ -13,6 +13,8 @@ services:
         public: true
     pcak\BixieApi\EventListener\BixieApiOpenTicketFormListener:
         public: true       
+    pcak\BixieApi\EventListener\BixieApiRegisterFormListener:
+        public: true       
     pcak\BixieApi\Controller\FrontendModule\BixieModulController:
         tags:
             -

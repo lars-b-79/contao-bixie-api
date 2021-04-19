@@ -12,7 +12,7 @@ servers:
 
 components:
     securitySchemes:
-        bearerAuth:            # arbitrary name for the security scheme
+        bearerAuth: # arbitrary name for the security scheme
             type: http
             scheme: bearer
     schemas:
@@ -79,7 +79,8 @@ components:
             type: object
             properties:
                 id:
-                    type: string
+                    type: integer
+                    format: int64
                 name:
                     type: string
                 erstelltDatum:
@@ -181,10 +182,10 @@ components:
                     type: string
                     description: Stichtag der Leistung
                 garantiert:
-                    type: integer
+                    type: string
                     description: Leistung in cent
                 prognostiziert:
-                    type: integer
+                    type: string
                     description: Leistung in cent
                 zahlungsart:
                     type: string
@@ -331,5 +332,21 @@ paths:
                     multipart/form-data:
                         schema:
                             $ref: '#/components/schemas/NeuesTicket'
+    /register:
+        post:
+            summary: Registriert einen Mitarbeiter
+            operationId: registerMitarbeiter
+            responses:
+                '200':
+                    description: Successful operation
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
 
 
