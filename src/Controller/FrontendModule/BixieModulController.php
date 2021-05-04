@@ -10,6 +10,7 @@ use Contao\PageModel;
 use Contao\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use pcak\BixieApi\LoginStatusCookie;
 
 class BixieModulController extends AbstractFrontendModuleController
 {
@@ -24,6 +25,9 @@ class BixieModulController extends AbstractFrontendModuleController
         }
 
         $template->loginStatus = $this->client->isLoggedIn();
+
+        LoginStatusCookie::set($this->client->isLoggedIn());
+
 
         if (!$this->client->isLoggedIn()) {
             return $template->getResponse();

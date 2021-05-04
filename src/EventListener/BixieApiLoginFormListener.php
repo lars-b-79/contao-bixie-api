@@ -4,6 +4,7 @@ namespace pcak\BixieApi\EventListener;
 
 use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\Form;
+use pcak\BixieApi\LoginStatusCookie;
 
 /**
  * @Hook("processFormData")
@@ -38,6 +39,13 @@ class BixieApiLoginFormListener
             $this->client->updateFromSession();
         }
 
-        $this->client->login($username, $password);
+
+        
+        $result_status = true;
+        if ($this->client->login($username, $password) == false) {
+            $result_status = false;
+        }
+       
+        LoginStatusCookie::set($result_status);
     }
 }
