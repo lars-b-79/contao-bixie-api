@@ -95,6 +95,11 @@ class ApiClient
         return $instance;
     }
 
+    public function getToken()
+    {
+        return $this->token;
+    }
+
  
     public function updateFromSession()
     {

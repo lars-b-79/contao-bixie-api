@@ -42,6 +42,8 @@ class BixieModulController extends AbstractFrontendModuleController
         }
 
 
+        $template->token = $this->client->getToken();
+
         $posteingang = $this->client->getPosteingang();
         $template->vorname = $posteingang->vorname;
         $template->name = $posteingang->name;
