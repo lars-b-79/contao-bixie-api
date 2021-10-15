@@ -39,6 +39,8 @@
       <a style="padding: 4px;background-color: indigo;color: white;margin: 3px;cursor:pointer;" onclick="$('.tabs').hide();$('#bixie_div_dokumente').show()">Dokumente</a>
   </div>
 
+
+  <!--
   <div style="width:100%;display:block;" id="bixie_div_leistungen" class="tabs">
     <div style="width:100%;display:flex;flex-direction:column;">
       <span style="font-size: 16px;text-align:center;">Dokumente</span>
@@ -151,7 +153,7 @@
     </div>
   </div>
 
-
+-->
 
 </div>
 

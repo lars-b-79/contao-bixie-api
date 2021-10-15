@@ -26,17 +26,37 @@
           <div style="width:50%;display: flex;flex-direction:column;">
             <h4>Leistungen</h4>
             <span>Leistungsbeginn <?= $z->lb ?></span>
-            <span><?= $z->alter->zahlungsart ?> Alter <?= $z->alter->garantiert ?></span>
-
-            <?php if ( isset($z->tod)): ?>
-            <span><?= $z->tod->zahlungsart ?> bei Tod <?= $z->tod->garantiert ?></span>
+            <?php if ( isset($z->anwartschaft_alter_hl)): ?>
+                <span><?= $z->anwartschaft_alter_hl->name ?></span>
+            <?php endif; ?>
+            <?php if ( isset($z->anwartschaft_alter)): ?>
+              <?php foreach ($z->anwartschaft_alter as $vl): ?>
+                <span><?= $vl->name ?></span>
+                <?php endforeach; ?>
             <?php endif; ?>
 
-            <?php if ( isset($z->bu)): ?>
-            <span><?= $z->bu->zahlungsart ?> bei BU <?= $z->bu->garantiert ?></span>
-            <?php endif; ?>
-            
 
+            <?php if ( isset($z->anwartschaft_tod_hl)): ?>
+                <span><?= $z->anwartschaft_tod_hl->name ?></span>
+            <?php endif; ?>
+            <?php if ( isset($z->anwartschaft_tod)): ?>
+              <?php foreach ($z->anwartschaft_tod as $vl): ?>
+                <span><?= $vl->name ?></span>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
+
+            <?php if ( isset($z->anwartschaft_bu_hl)): ?>
+                <span><?= $z->anwartschaft_bu_hl->name ?></span>
+            <?php endif; ?>
+            <?php if ( isset($z->anwartschaft_bu)): ?>
+              <?php foreach ($z->anwartschaft_bu as $vl): ?>
+                <span><?= $vl->name ?></span>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
+
+        
           </div>
 
         </div>
