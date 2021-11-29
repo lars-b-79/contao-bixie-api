@@ -1,159 +1,679 @@
-<div style="border:1px solid #111;margin-bottom: 50px;">
-  <div style="width:100%;">
-    <h4 style="text-align: center;"><?= $this->selectedZusage->name ?></h4>
-  </div>
+<div class="ce_text block">
 
+  <!-- Zurück Link -->
+  {{insert_content::12483}}
 
-  <div style="width:60%;margin:0 20%;padding:10px;display:flex;border:1px solid #111;flex-direction:column;">
-    <div style="width:100%;">
-      <h4>Steckbrief</h4>
-    </div>
-    <div style="width:100%;display:flex;">
-      <div style="width:50%;display: flex;flex-direction:column;">
-      
-        <span>Typ <?= $this->selectedZusage->df ?></span>
-        <span>Typ <?= $this->selectedZusage->art ?></span>
-        <?php if ( isset($this->selectedZusage->kennzahl)): ?>
-          <span>Kennzahl <?= $this->selectedZusage->kennzahl ?></span>
-        <?php endif; ?>
-      
-      </div>
-      <div style="width:50%;display: flex;flex-direction:column;">
-        <span>Versorgungsträger <?= $this->selectedZusage->vt ?></span>
-        <?php if ( isset($this->selectedZusage->vn)): ?>
-        <span>Vertragsnummer <?= $this->selectedZusage->vn ?></span>
-        <?php endif; ?>
-        <?php if ( isset($this->selectedZusage->vu)): ?>
-        <span>Gesellschaft <?= $this->selectedZusage->vu ?></span>
-        <?php endif; ?>
+  <h3>
+    <?= $this->selectedZusage->name ?>
+  </h3>
 
-      </div>
+  <div class="steckbrief">
+    <h4>Steckbrief</h4>
 
-    </div>
-  </div>
-
-  <div style="width:100%;display:flex;justify-content:center;">
-      <a style="padding: 4px;background-color: indigo;color: white;margin: 3px;cursor:pointer;" onclick="$('.tabs').hide();$('#bixie_div_leistungen').show()">Leistungen</a>
-      <a style="padding: 4px;background-color: indigo;color: white;margin: 3px;cursor:pointer;" onclick="$('.tabs').hide();$('#bixie_div_beitraege').show()">Beiträge</a>
-      <a style="padding: 4px;background-color: indigo;color: white;margin: 3px;cursor:pointer;" onclick="$('.tabs').hide();$('#bixie_div_bausteine').show()">Bausteine</a>
-      <a style="padding: 4px;background-color: indigo;color: white;margin: 3px;cursor:pointer;" onclick="$('.tabs').hide();$('#bixie_div_dokumente').show()">Dokumente</a>
-  </div>
-
-
-  <!--
-  <div style="width:100%;display:block;" id="bixie_div_leistungen" class="tabs">
-    <div style="width:100%;display:flex;flex-direction:column;">
-      <span style="font-size: 16px;text-align:center;">Dokumente</span>
-      <span style="font-size: 16px;text-align:center;">Leistungsbeginn <?= $this->selectedZusage->lb ?></span>
-      <div style="width:100%;display:flex;margin-top: 10px;">
-
-        <div style="width:50%;display: flex;flex-direction:column;">
-          <span style="font-size: 16px;">garantierter Leistungen</span>
-          <?php if ( isset($this->selectedZusage->alter)): ?>
-            <span><?= $this->selectedZusage->alter->zahlungsart ?> bei Pensionierung <?= $this->selectedZusage->alter->garantiert ?>
-              <?= $this->selectedZusage->alter->option ? ( ($this->selectedZusage->alter->zahlungsart == 'Rente') ? ' (Kapitaloption)' : ' (Rentenoption)' ) : '' ?>
-            </span>
-          <?php endif; ?>
-          <?php if ( isset($this->selectedZusage->tod)): ?>
-            <span><?= $this->selectedZusage->tod->zahlungsart ?> bei Tod <?= $this->selectedZusage->tod->garantiert ?>
-              <?= $this->selectedZusage->tod->option ? ( ($this->selectedZusage->tod->zahlungsart == 'Rente') ? ' (Kapitaloption)' : ' (Rentenoption)' ) : '' ?>
-            </span>
-          <?php endif; ?>
-          <?php if ( isset($this->selectedZusage->bu)): ?>
-            <span><?= $this->selectedZusage->bu->zahlungsart ?> bei BU <?= $this->selectedZusage->bu->garantiert ?>
-              <?= $this->selectedZusage->bu->option ? ( ($this->selectedZusage->bu->zahlungsart == 'Rente') ? ' (Kapitaloption)' : ' (Rentenoption)' ) : '' ?>
-            </span>
-          <?php endif; ?>
-
+    <div class="rs-columns ce_rs_columns_start">
+      <div
+        class="rs-column -large-col-2-1 -large-first -large-first-row -medium-col-2-1 -medium-first -medium-first-row -small-col-1-1 -small-first -small-last -small-first-row">
+        <div class="ce_table block">
+          <table>
+            <tbody>
+              <tr class="row_0 row_first odd">
+                <td class="col_0 col_first">Typ:</td>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->df ?>
+                </td>
+              </tr>
+              <tr class="row_1 even">
+                <td class="col_0 col_first">Typ:</td>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->art ?>
+                </td>
+              </tr>
+              <?php if ( isset($this->selectedZusage->kennzahl)): ?>
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">Kennzahl:</td>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->kennzahl ?>
+                </td>
+              </tr>
+              <?php endif; ?>
+            </tbody>
+          </table>
         </div>
-        <div style="width:50%;display: flex;flex-direction:column;">
-
-          <span style="font-size: 16px;">prognostizierte Leistungen</span>
-          <?php if ( isset($this->selectedZusage->alter)): ?>
-            <span><?= $this->selectedZusage->alter->zahlungsart ?> bei Pensionierung <?= $this->selectedZusage->alter->prognostiziert ?>
-              <?= $this->selectedZusage->alter->option ? ( ($this->selectedZusage->alter->zahlungsart == 'Rente') ? ' (Kapitaloption)' : ' (Rentenoption)' ) : '' ?>
-            </span>
-          <?php endif; ?>
-          <?php if ( isset($this->selectedZusage->tod)): ?>
-            <span><?= $this->selectedZusage->tod->zahlungsart ?> bei Tod <?= $this->selectedZusage->tod->prognostiziert ?>
-              <?= $this->selectedZusage->tod->option ? ( ($this->selectedZusage->tod->zahlungsart == 'Rente') ? ' (Kapitaloption)' : ' (Rentenoption)' ) : '' ?>
-            </span>
-          <?php endif; ?>
-          <?php if ( isset($this->selectedZusage->bu)): ?>
-            <span><?= $this->selectedZusage->bu->zahlungsart ?> bei BU <?= $this->selectedZusage->bu->prognostiziert ?>
-              <?= $this->selectedZusage->bu->option ? ( ($this->selectedZusage->bu->zahlungsart == 'Rente') ? ' (Kapitaloption)' : ' (Rentenoption)' ) : '' ?>
-            </span>
-          <?php endif; ?>
-
+      </div>
+      <div
+        class="rs-column -large-col-2-1 -large-last -large-first-row -medium-col-2-1 -medium-last -medium-first-row -small-col-1-1 -small-first -small-last">
+        <div class="ce_table block">
+          <table>
+            <tbody>
+              <tr class="row_0 row_first odd">
+                <td class="col_0 col_first">Versorgungsträger:</td>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->vt ?>
+                </td>
+              </tr>
+              <?php if ( isset($this->selectedZusage->vn)): ?>
+              <tr class="row_1 even">
+                <td class="col_0 col_first">Vertragsnummer:</td>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->vn ?>
+                </td>
+              </tr>
+              <?php endif; ?>
+              <?php if ( isset($this->selectedZusage->vu)): ?>
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">Gesellschaft:</td>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->vu ?>
+                </td>
+              </tr>
+              <?php endif; ?>
+            </tbody>
+          </table>
         </div>
-
       </div>
     </div>
+
   </div>
-  <div style="width:100%;display:none;" id="bixie_div_beitraege" class="tabs">
-    
-    <div style="width:100%;display:flex;flex-direction:column;">
-      <span style="font-size: 16px;text-align:center;">Beiträge</span>
-      <span style="font-size: 16px;text-align:center;">Gesamtbeitrag <?= $this->selectedZusage->gb ?></span>
-      <div style="width:100%;display:flex;margin-top: 10px;flex-direction:column;">
-
-        <?php foreach ($this->selectedZusage->beitraege as $b): ?>        
-
-        <div style="width:60%; margin: 0 20%;display:flex;justify-content:space-between;">
-          <span ><?= $b->name ?></span>
-          <span ><?= $b->finanzierung ?></span>
-          <span ><?= $b->zahlweise ?></span>
-          <span ><?= $b->beitrag ?></span>
-        </div>
-
-        <?php endforeach; ?>
-
-
-      </div>
-    </div>
-  </div>
-  <div style="width:100%;display:none;" id="bixie_div_bausteine" class="tabs">
-    <div style="width:100%;display:flex;flex-direction:column;">
-      <span style="font-size: 16px;text-align:center;">Bausteine</span>
-      <div style="width:100%;display:flex;margin-top: 10px;flex-direction:column;">
-
-        <?php foreach ($this->selectedZusage->bausteine as $b): ?>        
-
-        <div style="width:50%; margin: 0 25%;display:flex;justify-content:space-between;">
-          <span ><?= $b->name ?></span>
-          <span ><?= $b->stichtag ?></span>
-          <span ><?= $b->beitrag ?></span>
-          <span ><?= $b->leistung ?></span>
-        </div>
-
-        <?php endforeach; ?>
-
-
-      </div>
-    </div>
-  </div>
-  <div style="width:100%;display:none;" id="bixie_div_dokumente" class="tabs">
-    <div style="width:100%;display:flex;flex-direction:column;">
-      <span style="font-size: 16px;text-align:center;">Dokumente</span>
-      <div style="width:100%;display:flex;margin-top: 10px;flex-direction:column;">
-
-        <?php foreach ($this->selectedZusage->tags as $tag): ?>        
-
-        <div style="width:50%; margin: 10px 25%;display:flex;flex-direction:column;align-items: center;">
-          <span style="font-size: 16px;text-align:center;"><?= $tag->name ?></span>
-        <?php foreach ($tag->files as $file): ?>        
-          <a href="<?= $file->link ?>"><?= $file->name ?></a>
-        <?php endforeach; ?>
-        </div>
-
-        <?php endforeach; ?>
-
-
-      </div>
-    </div>
-  </div>
-
--->
 
 </div>
 
+
+<ul class="tab-nav">
+  <li><a class="tab active"
+      onclick="$('.tabs').hide();$('#bixie_div_leistungen').show();$('.tab').removeClass('active');$(this).addClass('active');">Leistungen</a>
+  </li>
+  <?php if ( isset($this->selectedZusage->beitraege)): ?>
+  <li><a class="tab"
+      onclick="$('.tabs').hide();$('#bixie_div_beitraege').show();$('.tab').removeClass('active');$(this).addClass('active');">Beiträge</a>
+  </li>
+  <?php endif; ?>
+  <?php if ( isset($this->selectedZusage->bausteine)): ?>
+  <li><a class="tab"
+      onclick="$('.tabs').hide();$('#bixie_div_bausteine').show();$('.tab').removeClass('active');$(this).addClass('active');">Bausteine</a>
+  </li>
+  <?php endif; ?>
+  <?php if ( isset($this->selectedZusage->tags)): ?>
+  <li><a class="tab"
+      onclick="$('.tabs').hide();$('#bixie_div_dokumente').show();$('.tab').removeClass('active');$(this).addClass('active');">Dokumente</a>
+  </li>
+  <?php endif; ?>
+</ul>
+
+<div id="tabbed-content">
+  <div id="bixie_div_leistungen" class="tabs">
+    <h3>Leistungen</h3>
+
+    <div class="rs-columns ce_rs_columns_start" style="display:flex;flex-wrap: wrap;">
+
+
+
+      <?php if ( isset($this->selectedZusage->anwartschaft_alter_hl)): ?>
+      <div style="margin-right: 1.5%;"
+        class="rs-column -large-col-2-1 -large-first -large-first-row -medium-col-2-1 -medium-first -medium-first-row -small-col-1-1 -small-first -small-last -small-first-row">
+        <div class="ce_table block">
+          <table>
+            <tbody>
+              <tr class="row_0 row_first odd">
+                <th class="col_0 col_first">
+                  <?= $this->selectedZusage->anwartschaft_alter_hl->name ?>
+                </th>
+                <th class="col_1 col_last">&nbsp;</th>
+              </tr>
+              <tr class="row_1 even">
+                <td class="col_0 col_first">Leistungsbeginn:</td>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->lb ?>
+                </td>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Prognose
+                </td>
+                <td class="col_1 col_last">
+                  <?= ($this->selectedZusage->anwartschaft_alter_hl->prognose == true) ? ' ja' : ' nein' ?>
+                </td>
+              </tr>
+
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Typ
+                </td>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->anwartschaft_alter_hl->typ ?>
+                </td>
+              </tr>
+
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Zahlungsart
+                </td>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->anwartschaft_alter_hl->zahlungsart ?>
+                </td>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Leistung
+                </td>
+                <?php if ( isset($this->selectedZusage->anwartschaft_alter_hl->laufendeLeistung)): ?>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->anwartschaft_alter_hl->laufendeLeistung ?> €
+                </td>
+                <?php endif; ?>
+
+                <?php if ( isset($this->selectedZusage->anwartschaft_alter_hl->kapital) && count($this->selectedZusage->anwartschaft_alter_hl->kapital) > 1): ?>
+                <td class="col_1 col_last">
+                  <?= count($this->selectedZusage->anwartschaft_alter_hl->kapital) ?> Raten
+                </td>
+                <?php endif; ?>
+
+                <?php if ( isset($this->selectedZusage->anwartschaft_alter_hl->kapital) && count($this->selectedZusage->anwartschaft_alter_hl->kapital) == 1): ?>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->anwartschaft_alter_hl->kapital[0]->leistung ?> €
+                </td>
+                <?php endif; ?>
+               
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <?php endif; ?>
+
+
+
+      <?php if ( isset($this->selectedZusage->anwartschaft_alter) ): ?>
+      <?php foreach ($this->selectedZusage->anwartschaft_alter as $leistung): ?>
+      <div style="margin-right: 1.5%;"
+        class="rs-column -large-col-2-1 -large-first -large-first-row -medium-col-2-1 -medium-first -medium-first-row -small-col-1-1 -small-first -small-last -small-first-row">
+        <div class="ce_table block">
+          <table>
+            <tbody>
+              <tr class="row_0 row_first odd">
+                <th class="col_0 col_first">
+                  <?= $leistung->name ?>
+                </th>
+                <th class="col_1 col_last">&nbsp;</th>
+              </tr>
+
+              <tr class="row_1 even">
+                <td class="col_0 col_first">Leistungsbeginn:</td>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->lb ?>
+                </td>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Prognose
+                </td>
+                <td class="col_1 col_last">
+                  <?= ($leistung->prognose == true) ? ' ja' : ' nein' ?>
+                </td>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Typ
+                </td>
+                <td class="col_1 col_last">
+                  <?= $leistung->typ ?>
+                </td>
+              </tr>
+
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Zahlungsart
+                </td>
+                <td class="col_1 col_last">
+                  <?= $leistung->zahlungsart ?>
+                </td>
+              </tr>
+
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Leistung
+                </td>
+
+                <?php if ( isset($leistung->laufendeLeistung)): ?>
+                <td class="col_1 col_last">
+                  <?= $leistung->laufendeLeistung ?> €
+                </td>
+                <?php endif; ?>
+
+                <?php if ( isset($leistung->kapital) && count($leistung->kapital) > 1): ?>
+                <td class="col_1 col_last">
+                  <?= count($leistung->kapital) ?> Raten
+                </td>
+                <?php endif; ?>
+
+                <?php if ( isset($leistung->kapital) && count($leistung->kapital) == 1): ?>
+                <td class="col_1 col_last">
+                  <?= $leistung->kapital[0]->leistung ?> €
+                </td>
+                <?php endif; ?>
+              
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <?php endforeach; ?>
+      <?php endif; ?>
+
+
+
+
+
+      <?php if ( isset($this->selectedZusage->anwartschaft_bu_hl)): ?>
+      <div style="margin-right: 1.5%;"
+        class="rs-column -large-col-2-1 -large-first -large-first-row -medium-col-2-1 -medium-first -medium-first-row -small-col-1-1 -small-first -small-last -small-first-row">
+        <div class="ce_table block">
+          <table>
+            <tbody>
+              <tr class="row_0 row_first odd">
+                <th class="col_0 col_first">
+                  <?= $this->selectedZusage->anwartschaft_bu_hl->name ?>
+                </th>
+                <th class="col_1 col_last">&nbsp;</th>
+              </tr>
+
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Prognose
+                </td>
+                <td class="col_1 col_last">
+                  <?= ($this->selectedZusage->anwartschaft_bu_hl->prognose == true) ? ' ja' : ' nein' ?>
+                </td>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Typ
+                </td>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->anwartschaft_bu_hl->typ ?>
+                </td>
+              </tr>
+
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Zahlungsart
+                </td>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->anwartschaft_bu_hl->zahlungsart ?>
+                </td>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Leistung
+                </td>
+               
+
+                <?php if ( isset($this->selectedZusage->anwartschaft_bu_hl->laufendeLeistung)): ?>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->anwartschaft_bu_hl->laufendeLeistung ?> €
+                </td>
+                <?php endif; ?>
+
+                <?php if ( isset($this->selectedZusage->anwartschaft_bu_hl->kapital) && count($this->selectedZusage->anwartschaft_bu_hl->kapital) > 1): ?>
+                <td class="col_1 col_last">
+                  <?= count($this->selectedZusage->anwartschaft_bu_hl->kapital) ?> Raten
+                </td>
+                <?php endif; ?>
+
+                <?php if ( isset($this->selectedZusage->anwartschaft_bu_hl->kapital) && count($this->selectedZusage->anwartschaft_bu_hl->kapital) == 1): ?>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->anwartschaft_bu_hl->kapital[0]->leistung ?> €
+                </td>
+                <?php endif; ?>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <?php endif; ?>
+
+
+
+      <?php if ( isset($this->selectedZusage->anwartschaft_bu) ): ?>
+      <?php foreach ($this->selectedZusage->anwartschaft_bu as $leistung): ?>
+      <div style="margin-right: 1.5%;"
+        class="rs-column -large-col-2-1 -large-first -large-first-row -medium-col-2-1 -medium-first -medium-first-row -small-col-1-1 -small-first -small-last -small-first-row">
+        <div class="ce_table block">
+          <table>
+            <tbody>
+              <tr class="row_0 row_first odd">
+                <th class="col_0 col_first">
+                  <?= $leistung->name ?>
+                </th>
+                <th class="col_1 col_last">&nbsp;</th>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Prognose
+                </td>
+                <td class="col_1 col_last">
+                  <?= ($leistung->prognose == true) ? ' ja' : ' nein' ?>
+                </td>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Typ
+                </td>
+                <td class="col_1 col_last">
+                  <?= $leistung->typ ?>
+                </td>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Zahlungsart
+                </td>
+                <td class="col_1 col_last">
+                  <?= $leistung->zahlungsart ?>
+                </td>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Leistung
+                </td>
+               
+                <?php if ( isset($leistung->laufendeLeistung)): ?>
+                <td class="col_1 col_last">
+                  <?= $leistung->laufendeLeistung ?> €
+                </td>
+                <?php endif; ?>
+
+                <?php if ( isset($leistung->kapital) && count($leistung->kapital) > 1): ?>
+                <td class="col_1 col_last">
+                  <?= count($leistung->kapital) ?> Raten
+                </td>
+                <?php endif; ?>
+
+                <?php if ( isset($leistung->kapital) && count($leistung->kapital) == 1): ?>
+                <td class="col_1 col_last">
+                  <?= $leistung->kapital[0]->leistung ?> €
+                </td>
+                <?php endif; ?>
+
+                
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <?php endforeach; ?>
+      <?php endif; ?>
+
+
+
+
+
+
+      <?php if ( isset($this->selectedZusage->anwartschaft_tod_hl)): ?>
+      <div style="margin-right: 1.5%;"
+        class="rs-column -large-col-2-1 -large-first -large-first-row -medium-col-2-1 -medium-first -medium-first-row -small-col-1-1 -small-first -small-last -small-first-row">
+        <div class="ce_table block">
+          <table>
+            <tbody>
+              <tr class="row_0 row_first odd">
+                <th class="col_0 col_first">
+                  <?= $this->selectedZusage->anwartschaft_tod_hl->name ?>
+                </th>
+                <th class="col_1 col_last">&nbsp;</th>
+              </tr>
+
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Prognose
+                </td>
+                <td class="col_1 col_last">
+                  <?= ($this->selectedZusage->anwartschaft_tod_hl->prognose == true) ? ' ja' : ' nein' ?>
+                </td>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Typ
+                </td>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->anwartschaft_tod_hl->typ ?>
+                </td>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Zahlungsart
+                </td>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->anwartschaft_tod_hl->zahlungsart ?>
+                </td>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Leistung
+                </td>
+                
+                <?php if ( isset($this->selectedZusage->anwartschaft_tod_hl->laufendeLeistung)): ?>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->anwartschaft_tod_hl->laufendeLeistung ?> €
+                </td>
+                <?php endif; ?>
+
+                <?php if ( isset($this->selectedZusage->anwartschaft_tod_hl->kapital) && count($this->selectedZusage->anwartschaft_tod_hl->kapital) > 1): ?>
+                <td class="col_1 col_last">
+                  <?= count($this->selectedZusage->anwartschaft_tod_hl->kapital) ?> Raten
+                </td>
+                <?php endif; ?>
+
+                <?php if ( isset($this->selectedZusage->anwartschaft_tod_hl->kapital) && count($this->selectedZusage->anwartschaft_tod_hl->kapital) == 1): ?>
+                <td class="col_1 col_last">
+                  <?= $this->selectedZusage->anwartschaft_tod_hl->kapital[0]->leistung ?> €
+                </td>
+                <?php endif; ?>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <?php endif; ?>
+
+
+
+      <?php if ( isset($this->selectedZusage->anwartschaft_tod) ): ?>
+      <?php foreach ($this->selectedZusage->anwartschaft_tod as $leistung): ?>
+      <div style="margin-right: 1.5%;"
+        class="rs-column -large-col-2-1 -large-first -large-first-row -medium-col-2-1 -medium-first -medium-first-row -small-col-1-1 -small-first -small-last -small-first-row">
+        <div class="ce_table block">
+          <table>
+            <tbody>
+              <tr class="row_0 row_first odd">
+                <th class="col_0 col_first">
+                  <?= $leistung->name ?>
+                </th>
+                <th class="col_1 col_last">&nbsp;</th>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Prognose
+                </td>
+                <td class="col_1 col_last">
+                  <?= ($leistung->prognose == true) ? ' ja' : ' nein' ?>
+                </td>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Typ
+                </td>
+                <td class="col_1 col_last">
+                  <?= $leistung->typ ?>
+                </td>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Zahlungsart
+                </td>
+                <td class="col_1 col_last">
+                  <?= $leistung->zahlungsart ?>
+                </td>
+              </tr>
+
+              <tr class="row_2 odd">
+                <td class="col_0 col_first">
+                  Leistung
+                </td>
+
+                <?php if ( isset($leistung->laufendeLeistung)): ?>
+                <td class="col_1 col_last">
+                  <?= $leistung->laufendeLeistung ?> €
+                </td>
+                <?php endif; ?>
+
+                <?php if ( isset($leistung->kapital) && count($leistung->kapital) > 1): ?>
+                <td class="col_1 col_last">
+                  <?= count($leistung->kapital) ?> Raten
+                </td>
+                <?php endif; ?>
+
+                <?php if ( isset($leistung->kapital) && count($leistung->kapital) == 1): ?>
+                <td class="col_1 col_last">
+                  <?= $leistung->kapital[0]->leistung ?> €
+                </td>
+                <?php endif; ?>
+
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <?php endforeach; ?>
+      <?php endif; ?>
+
+
+
+
+    </div>
+
+  </div><!-- id="bixie_div_leistungen" -->
+
+  <?php if ( isset($this->selectedZusage->beitraege)): ?>
+  <div id="bixie_div_beitraege" class="tabs hidden">
+    <h3>Beiträge</h3>
+
+    <div class="ce_table block">
+      <table>
+        <tbody>
+          <?php foreach ($this->selectedZusage->beitraege as $b): ?>
+          <tr class="row_0">
+            <td class="col_0 col_first">
+              <?= $b->name ?>
+            </td>
+            <td class="col_1">
+              <?= $b->finanzierung ?>
+            </td>
+            <td class="col_2">
+              <?= $b->zahlweise ?>
+            </td>
+            <td class="col_3 col_last" style="text-align: right;">
+              <?= $b->beitrag ?> €
+            </td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Gesamtbeitrag
+      <?= $this->selectedZusage->gb ?> €
+    </h4>
+
+  </div><!-- id="bixie_div_beitraege" -->
+  <?php endif; ?>
+
+  <?php if ( isset($this->selectedZusage->bausteine)): ?>
+  <div id="bixie_div_bausteine" class="tabs hidden">
+    <h3>Bausteine</h3>
+
+    <div class="ce_table block">
+      <table>
+        <tbody>
+          <?php foreach ($this->selectedZusage->bausteine as $b): ?>
+          <tr class="row">
+            <td class="col_0 col_first">
+              <?= $b->name ?>
+            </td>
+            <td class="col_1">
+              <?= $b->stichtag ?>
+            </td>
+            <td class="col_2">
+              <?= $b->beitrag ?>
+            </td>
+            <td class="col_3 col_last">
+              <?= $b->leistung ?>
+            </td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- id="bixie_div_bausteine" -->
+  <?php endif; ?>
+
+  <?php if ( isset($this->selectedZusage->tags)): ?>
+  <div id="bixie_div_dokumente" class="tabs hidden">
+    <h3>Dokumente</h3>
+
+    <?php foreach ($this->selectedZusage->tags as $tag): ?>
+
+    <div class="ce_table block">
+      <table>
+        <tbody>
+          <tr class="row_0 row_first odd">
+            <th class="col_0 col_first">
+              <?= $tag->name ?>
+            </th>
+            <th class="col_1 col_last">&nbsp;</th>
+          </tr>
+          <?php foreach ($tag->files as $file): ?>
+          <tr class="row_1">
+            <td class="col_0 col_first">
+              <?= $file->name ?>
+            </td>
+            <td class="col_1 col_last"><a href="<?= $file->link . '?&token=' . $this->token ?>">Download</a></td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+
+    <?php endforeach; ?>
+
+  </div><!-- id="bixie_div_dokumente" -->
+  <?php endif; ?>
+
+</div><!-- id="tabbed-content" -->
+
+<!-- Zurück Link -->
+{{insert_content::12483}}

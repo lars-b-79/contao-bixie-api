@@ -1,71 +1,184 @@
-<div style="display:flex;flex-direction:column;"> 
-    
-      <?php foreach ($this->zusagen as $z): ?>
-      <div style="width:60%;margin:10px 20%;padding:10px;display:flex;border:1px solid #111;flex-direction:column;">
-        <div style="width:100%;text-align:center;">
-            <h4><?= $z->name ?></h4>
-            <span style="font-size: 2em;"><?= $z->df ?></span>
-        </div>
 
-        <div style="width:100%;display: flex;margin-top:20px;">
+<?php if ($this->loginStatus) { ?>
 
-          <div style="width:50%;display: flex;flex-direction:column;">
-            <h4>Steckbrief</h4>
-            <span>Typ <?= $z->art ?></span>
-            <?php if ( isset($z->kennzahl)): ?>
-              <span>Kennzahl <?= $z->kennzahl ?></span>
-            <?php endif; ?>
-            <span>Versorgungsträger <?= $z->vt ?></span>
-            <?php if ( isset($z->vn)): ?>
-            <span>Vertragsnummer <?= $z->vn ?></span>
-            <?php endif; ?>
-            <?php if ( isset($z->vu)): ?>
-            <span>Gesellschaft <?= $z->vu ?></span>
-            <?php endif; ?>
-          </div>
-          <div style="width:50%;display: flex;flex-direction:column;">
-            <h4>Leistungen</h4>
-            <span>Leistungsbeginn <?= $z->lb ?></span>
-            <?php if ( isset($z->anwartschaft_alter_hl)): ?>
-                <span><?= $z->anwartschaft_alter_hl->name ?></span>
-            <?php endif; ?>
-            <?php if ( isset($z->anwartschaft_alter)): ?>
-              <?php foreach ($z->anwartschaft_alter as $vl): ?>
-                <span><?= $vl->name ?></span>
-                <?php endforeach; ?>
-            <?php endif; ?>
-
-
-            <?php if ( isset($z->anwartschaft_tod_hl)): ?>
-                <span><?= $z->anwartschaft_tod_hl->name ?></span>
-            <?php endif; ?>
-            <?php if ( isset($z->anwartschaft_tod)): ?>
-              <?php foreach ($z->anwartschaft_tod as $vl): ?>
-                <span><?= $vl->name ?></span>
-                <?php endforeach; ?>
-            <?php endif; ?>
-
-
-            <?php if ( isset($z->anwartschaft_bu_hl)): ?>
-                <span><?= $z->anwartschaft_bu_hl->name ?></span>
-            <?php endif; ?>
-            <?php if ( isset($z->anwartschaft_bu)): ?>
-              <?php foreach ($z->anwartschaft_bu as $vl): ?>
-                <span><?= $vl->name ?></span>
-                <?php endforeach; ?>
-            <?php endif; ?>
-
-
-        
-          </div>
-
-        </div>
-        <a style="background:gray;padding:10px;width:20%;color:white;" href="{{link_url::221}}?zid=<?= $z->id ?>">öffnen</a>
-
-      </div>
-
-      
-       
-      <?php endforeach; ?>
+  <div class="ce_text left-50 first block">
+    <h3><a href="{{link_url::647}}">Support-Posteingang</a></h3>
+    <p>Ihre Betriebsrente wird in digitaler Form verwaltet. Wichtige Prozesse werden hier über das Support- Team von p.c.a.k. abgewickelt.</p>
+  </div>
   
-</div>
+  <div class="ce_text left-50 last block">
+    <h3>Übersicht Ihrer Betriebsrente(n)</h3>
+    <p>Sie haben verschiedene Betriebsrenten unterschiedlicher Durchführung und Finanzierungswege. Hier sehen Sie auf einen Blick, welche und wie hoch die Leistungen Ihrer Betriebsrente(n) sind.</p>
+  </div>
+  
+  <div class="betriebsrente"> 
+      
+        <?php foreach ($this->zusagen as $z): ?>
+        <div class="inside">
+          <div style="width:100%;text-align:center;">
+              <h3><?= $z->name ?></h3>
+              <p><?= $z->df ?></p>
+          </div>
+          
+          <div class="rs-columns ce_rs_columns_start">
+            <div class="rs-column -large-col-2-1 -large-first -large-first-row -medium-col-2-1 -medium-first -medium-first-row -small-col-1-1 -small-first -small-last -small-first-row">
+              <div class="ce_table block">
+                <h4>
+                  Steckbrief
+                </h4>
+                <table>
+                  <tbody>
+                    <tr class="row_0 row_first odd">
+                      <td class="col_0 col_first">Typ:</td>
+                      <td class="col_1 col_last"><?= $z->art ?></td>
+                    </tr>
+                    <?php if ( isset($z->kennzahl)): ?>
+                    <tr class="row_1 even">
+                      <td class="col_0 col_first">Kennzahl:</td>
+                      <td class="col_1 col_last"><?= $z->kennzahl ?></td>
+                    </tr>
+                    <?php endif; ?>
+                    <tr class="row_2 odd">
+                      <td class="col_0 col_first">Versorgungsträger:</td>
+                      <td class="col_1 col_last"><?= $z->vt ?></td>
+                    </tr>
+                    <?php if ( isset($z->vn)): ?>
+                    <tr class="row_3 row_last even">
+                      <td class="col_0 col_first">Vertragsnummer:</td>
+                      <td class="col_1 col_last"><?= $z->vn ?></td>
+                    </tr>
+                    <?php endif; ?>
+                    <?php if ( isset($z->vu)): ?>
+                    <tr class="row_3 row_last even">
+                      <td class="col_0 col_first">Gesellschaft:</td>
+                      <td class="col_1 col_last"><?= $z->vu ?></td>
+                    </tr>
+                    <?php endif; ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="rs-column -large-col-2-1 -large-last -large-first-row -medium-col-2-1 -medium-last -medium-first-row -small-col-1-1 -small-first -small-last">
+              <div class="ce_table block">
+                <h4>
+                  Leistungen
+                </h4>
+                <table>
+                  <tbody>
+                    <tr class="row_0 row_first odd">
+                      <td class="col_0 col_first">Leistungsbeginn:</td>
+                      <td class="col_1 col_last"><?= $z->lb ?></td>
+                    </tr>
+                    <?php if ( isset($z->anwartschaft_alter_hl)): ?>
+                      <tr class="row_1 even">
+                        <td class="col_0 col_first"><?= $z->anwartschaft_alter_hl->name ?></td>
+                         <?php if ( isset($z->anwartschaft_alter_hl->laufendeLeistung)): ?>
+                          <td class="col_1 "><?= $z->anwartschaft_alter_hl->laufendeLeistung ?></td>
+                          <?php endif; ?>
+                         <?php if ( isset($z->anwartschaft_alter_hl->kapital) && count($z->anwartschaft_alter_hl->kapital) > 1): ?>
+                          <td class="col_1 "><?= count($z->anwartschaft_alter_hl->kapital) ?> Raten</td>
+                          <?php endif; ?>
+                         <?php if ( isset($z->anwartschaft_alter_hl->kapital) && count($z->anwartschaft_alter_hl->kapital) == 1): ?>
+                          <td class="col_1 col_last"><?= $z->anwartschaft_alter_hl->kapital[0].leistung ?></td>
+                          <?php endif; ?>
+                      </tr>
+                     <?php endif; ?>
+                     
+                      <?php if ( isset($z->anwartschaft_bu_hl)): ?>
+                      <tr class="row_2 odd">
+                        <td class="col_0 col_first"><?= $z->anwartschaft_bu_hl->name ?></td>
+                         <?php if ( isset($z->anwartschaft_bu_hl->laufendeLeistung)): ?>
+                          <td class="col_1 "><?= $z->anwartschaft_bu_hl->laufendeLeistung ?></td>
+                          <?php endif; ?>
+                         <?php if ( isset($z->anwartschaft_bu_hl->kapital) && count($z->anwartschaft_bu_hl->kapital) > 1): ?>
+                          <td class="col_1 "><?= count($z->anwartschaft_bu_hl->kapital) ?> Raten</td>
+                          <?php endif; ?>
+                         <?php if ( isset($z->anwartschaft_bu_hl->kapital) && count($z->anwartschaft_bu_hl->kapital) == 1): ?>
+                          <td class="col_1 col_last"><?= $z->anwartschaft_bu_hl->kapital[0].leistung ?></td>
+                          <?php endif; ?>
+                      </tr>
+                     <?php endif; ?>
+                     
+                     
+                      <?php if ( isset($z->anwartschaft_tod_hl)): ?>
+                      <tr class="row_3 row_last even">
+                        <td class="col_0 col_first"><?= $z->anwartschaft_tod_hl->name ?></td>
+                         <?php if ( isset($z->anwartschaft_tod_hl->laufendeLeistung)): ?>
+                          <td class="col_1 "><?= $z->anwartschaft_tod_hl->laufendeLeistung ?></td>
+                          <?php endif; ?>
+                         <?php if ( isset($z->anwartschaft_tod_hl->kapital) && count($z->anwartschaft_tod_hl->kapital) > 1): ?>
+                          <td class="col_1 "><?= count($z->anwartschaft_tod_hl->kapital) ?> Raten</td>
+                          <?php endif; ?>
+                         <?php if ( isset($z->anwartschaft_tod_hl->kapital) && count($z->anwartschaft_tod_hl->kapital) == 1): ?>
+                          <td class="col_1 col_last"><?= $z->anwartschaft_tod_hl->kapital[0].leistung ?></td>
+                          <?php endif; ?>
+                      </tr>
+                     <?php endif; ?>
+                    
+                   
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+          <p class="details"><a href="{{link_url::648}}?zid=<?= $z->id ?>">Details und Dokumente</a></p>
+          
+        </div>
+  
+        <?php endforeach; ?>
+    
+  </div>
+  
+  <?php } else { ?>
+  
+  <div class="ce_text left-50 block">
+    <h3>Immer wissen, wie Ihre Zukunft aussehen wird.</h3>
+    <p>Die Antwort auf die Fragen, wie viel Betriebsrente Ihnen im Alter zusteht und wie viel Euro pro Jahr Sie erfolgreich vorsorgen, haben die meisten nicht sofort parat. Deshalb bieten wir Ihnen Ihre Betriebsrente ab sofort digital an - damit Sie von überall Zugriff auf die Antworten der wichtigsten finanziellen Fragen Ihrer Zukunft haben.</p><p>In unserem Betriebsrentenportal steht Ihnen ein individueller, passwortgeschützter Bereich zur Verfügung, in dem Sie einen transparenten Überblick über Ihre gesamte Betriebsrente haben, Details wie das Versorgungswerk Ihrer Firma einsehen können, sowie von einem schnellen Support über die Beratungsfirma p.c.a.k. profitieren.</p>
+  </div>
+  
+  <div class="ce_image zentriert last block">
+    <figure class="image_container">
+      <img src="files/daten/bilder/screenshots-bixie/bixie/bixie-bav.jpg" alt="Screenshot von bixie auf einem Smartphone, das zeigt, wie User über die Schnellsuche Unternehmen finden können." title="Screenshot bixie Unternehmen suchen" itemprop="image" width="1600" height="952">
+    </figure>
+  </div>
+  
+  </div><!-- mod_article inside close -->
+  </div><!-- mod_article close -->
+  
+  <!-- mod_article open -->
+  <div id="bav-konto-anmelden" class="mod_article inhalt-800px block">
+    <div class="inside">
+  
+    <div class="ce_text zentriert first block">
+      <h3>Ihre Zukunftsplanung freischalten</h3>
+      <p>Lassen Sie sich zu Ihrem persönlichen Bereich freischalten, um Ihre bestehende oder zukünftige Betriebsrente stets parat zu haben. Oder melden Sie sich direkt an, wenn Sie Ihre Zugangsdaten schon erhalten haben.</p>
+    </div>
+  
+    <div class="rs-columns ce_rs_columns_start">
+      <div class="rs-column -large-col-2-1 -large-first -large-first-row -medium-col-2-1 -medium-first -medium-first-row -small-col-2-1 -small-first -small-first-row">
+        <div class="ce_hyperlink button aktiv block">
+          <a href="{{link_url::644}}" class="hyperlink_txt" data-lightbox="registrieren">Meinen Account freischalten</a>
+        </div>
+      </div>
+  
+      <div class="rs-column -large-col-2-1 -large-last -large-first-row -medium-col-2-1 -medium-last -medium-first-row -small-col-2-1 -small-last -small-first-row">
+        <div class="ce_hyperlink button block">
+          <a href="{{link_url::641}}" class="hyperlink_txt" data-lightbox="login">Anmelden</a>
+        </div>
+      </div>
+    </div>
+  
+    <div class="ce_text last block">
+      <p style="text-align: right;"><a href="{{link_url::649}}" data-lightbox="passwort">Zugangsdaten vergessen</a></p>
+    </div>
+  
+    </div>
+  </div>
+  <!-- mod_article close -->
+    
+  <div><!-- mod_article open -->
+  <div><!-- mod_article inside open -->
+  
+  <?php } ?>
+  
