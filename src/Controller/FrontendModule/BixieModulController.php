@@ -53,6 +53,7 @@ class BixieModulController extends AbstractFrontendModuleController
 
         $zusagen = $this->client->getZusagen()->zusagen;
         $template->zusagen = $zusagen;
+        $template->globalTags = $this->client->getZusagen()->docs;
 
 
         $zusage_id = $request->query->get('zid');
