@@ -3,6 +3,9 @@ services:
         autowire: true
         autoconfigure: true
         public: false
+        bind:
+            $projectDir: '%kernel.project_dir%'
+
     pcak\BixieApi\EventListener\BixieApiLoginFormListener:
         public: true
     pcak\BixieApi\EventListener\BixieApiLogoutFormListener:
@@ -12,15 +15,23 @@ services:
     pcak\BixieApi\EventListener\BixieApiUpdatePosteingangFormListener:
         public: true
     pcak\BixieApi\EventListener\BixieApiOpenTicketFormListener:
-        public: true       
+        public: true
     pcak\BixieApi\EventListener\BixieApiRegisterFormListener:
-        public: true       
+        public: true
     pcak\BixieApi\Controller\FrontendModule\BixieModulController:
         tags:
             -
                 name: contao.frontend_module
                 category: miscellaneous
-
- 
- 
-
+    pcak\BixieApi\Controller\Saml\LoginModuleController:
+        tags:
+            -
+                name: contao.frontend_module
+                type: saml_login
+                category: miscellaneous
+    pcak\BixieApi\Controller\Saml\MetadataController:
+        tags:
+            - controller.service_arguments
+    pcak\BixieApi\Controller\Saml\AcsController:
+        tags:
+            - controller.service_arguments

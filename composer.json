@@ -1,22 +1,24 @@
 {
     "name": "pcak/contao-bixie-api",
-    "description": "Frontendmodule und Client f\u0000r die Anbindung der bixie API.",
+    "description": "Frontendmodule und Client für die Anbindung der bixie API.",
     "keywords":["contao","bixie"],
     "type": "contao-bundle",
-    "license": "LGPL-3.0-or-later",
+    "license": "proprietary",
     "require": {
+        "php": "8.1.*",
         "guzzlehttp/guzzle": "7.4.5",
-        "contao/core-bundle": "^4.4"
+        "contao/core-bundle": "^4.9.31",
+        "litesaml/lightsaml": "^1"
     },
     "conflict": {
-        "contao/core": "*",
         "contao/manager-plugin": "<2.0 || >=3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9",
         "contao/manager-plugin": "^2.0",
         "friendsofphp/php-cs-fixer": "^2.12",
-        "symfony/phpunit-bridge": "^3.2"
+        "symfony/phpunit-bridge": "^3.2",
+        "contao/core-bundle": "4.9.*"
     },
     "authors": [
         {
