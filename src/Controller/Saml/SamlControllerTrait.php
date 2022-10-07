@@ -12,6 +12,7 @@ use LightSaml\Credential\X509Certificate;
 use LightSaml\Credential\X509Credential;
 use LightSaml\Model\Context\DeserializationContext;
 use LightSaml\Model\Metadata\EntityDescriptor;
+use Psr\Log\LoggerInterface;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
@@ -25,6 +26,7 @@ trait SamlControllerTrait
         private readonly ContaoFramework $framework,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly Filesystem $filesystem,
+        private readonly LoggerInterface $logger,
         private readonly string $projectDir,
     ){
     }
@@ -49,7 +51,15 @@ trait SamlControllerTrait
             ['fallbackToEmpty' => true]
         );
 
-        if (null === $page || !$page->samlSPEnabled) {
+        if (null === $page) {
+            $this->logger->error("SAML: no root page for {$request->getHost()}");
+
+            throw new NotFoundHttpException();
+        }
+
+        if (!$page->samlSPEnabled) {
+            $this->logger->error("SAML: not enabled for page ID $page->id ({$request->getHost()})");
+
             throw new NotFoundHttpException();
         }
 
