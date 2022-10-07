@@ -48,7 +48,7 @@ trait SamlControllerTrait
 
         $page = PageModel::findPublishedFallbackByHostname(
             $request->getHost(),
-            ['fallbackToEmpty' => true]
+            ['fallbackToEmpty' => true, 'order' => 'tl_page.dns DESC']
         );
 
         if (null === $page) {
