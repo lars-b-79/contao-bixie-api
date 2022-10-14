@@ -34,8 +34,12 @@ class AcsController
         }
 
         $messageContext = new MessageContext();
+        $binding->receive($request, $messageContext);
+
         /** @var \LightSaml\Model\Protocol\Response $response */
-        $response = $binding->receive($request, $messageContext);
+        $response = $messageContext->getMessage();
+
+        dump($response);
 
         $certificate = $this->getIdPEntityDescriptor($request)
             ->getFirstIdpSsoDescriptor()
