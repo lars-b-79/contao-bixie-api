@@ -51,10 +51,25 @@ class AcsController
 
             /** @var EncryptedAssertionReader $reader */
             $reader = $response->getFirstEncryptedAssertion();
-            $assertion = $reader->decryptMultiAssertion([$credentials], $decryptDeserializeContext);
+
+            if ($reader instanceof EncryptedAssertionReader) {
+                $assertion = $reader->decryptMultiAssertion([$credentials], $decryptDeserializeContext);
+            }
         }
 
-        $certificate = $this->getIdPEntityDescriptor($request)
+        if (null === $assertion) {
+            throw new \RuntimeException('SAML message does not contain a valid assertion');
+        }
+
+        dump($assertion);
+
+        $idpEntityDescriptor = $this->getIdPEntityDescriptor($request);
+
+        if ($assertion->getIssuer()->getValue() !== $idpEntityDescriptor->getEntityID()) {
+            throw new \RuntimeException('SAML: invalid assertion issuer');
+        }
+
+        $certificate = $idpEntityDescriptor
             ->getFirstIdpSsoDescriptor()
             ?->getFirstKeyDescriptor(KeyDescriptor::USE_SIGNING)
             ?->getCertificate()
@@ -73,8 +88,6 @@ class AcsController
         } catch (\Exception) {
             throw new BadRequestHttpException('SAML Signature validation failed');
         }
-
-        dump($assertion);
 
         return new Response('SAML Successful');
     }
