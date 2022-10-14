@@ -8,6 +8,7 @@ use Contao\CoreBundle\Exception\InternalServerErrorHttpException;
 use LightSaml\Binding\BindingFactory;
 use LightSaml\Context\Profile\MessageContext;
 use LightSaml\Credential\KeyHelper;
+use LightSaml\Model\Assertion\EncryptedAssertionReader;
 use LightSaml\Model\Metadata\KeyDescriptor;
 use LightSaml\Model\XmlDSig\AbstractSignatureReader;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,18 +37,22 @@ class AcsController
         $messageContext = new MessageContext();
         $binding->receive($request, $messageContext);
 
-        /** @var \LightSaml\Model\Protocol\Response $response */
         $response = $messageContext->getMessage();
 
-        dump($response);
+        if (!$response instanceof \LightSaml\Model\Protocol\Response) {
+            throw new BadRequestHttpException('No response message');
+        }
 
-        $decryptDeserializeContext = new \LightSaml\Model\Context\DeserializationContext();
+        $assertion = $response->getFirstAssertion();
 
-        $credentials = $this->getOwnCredential($request);
-        $reader = $response->getFirstEncryptedAssertion();
-        $assertion = $reader->decryptMultiAssertion([$credentials], $decryptDeserializeContext);
+        if (null === $assertion) {
+            $decryptDeserializeContext = new \LightSaml\Model\Context\DeserializationContext();
+            $credentials = $this->getOwnCredential($request);
 
-        dd($assertion);
+            /** @var EncryptedAssertionReader $reader */
+            $reader = $response->getFirstEncryptedAssertion();
+            $assertion = $reader->decryptMultiAssertion([$credentials], $decryptDeserializeContext);
+        }
 
         $certificate = $this->getIdPEntityDescriptor($request)
             ->getFirstIdpSsoDescriptor()
@@ -61,7 +66,7 @@ class AcsController
 
         try {
             /** @var AbstractSignatureReader $signature */
-            $signature = $response->getSignature();
+            $signature = $assertion->getSignature();
             if (!$signature->validate(KeyHelper::createPublicKey($certificate))) {
                 throw new \RuntimeException('Signature validation failed');
             }
@@ -69,7 +74,7 @@ class AcsController
             throw new BadRequestHttpException('SAML Signature validation failed');
         }
 
-        dump($response);
+        dump($assertion);
 
         return new Response('SAML Successful');
     }
