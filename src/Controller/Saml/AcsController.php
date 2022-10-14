@@ -41,6 +41,14 @@ class AcsController
 
         dump($response);
 
+        $decryptDeserializeContext = new \LightSaml\Model\Context\DeserializationContext();
+
+        $credentials = $this->getOwnCredential($request);
+        $reader = $response->getFirstEncryptedAssertion();
+        $assertion = $reader->decryptMultiAssertion([$credentials], $decryptDeserializeContext);
+
+        dd($assertion);
+
         $certificate = $this->getIdPEntityDescriptor($request)
             ->getFirstIdpSsoDescriptor()
             ?->getFirstKeyDescriptor(KeyDescriptor::USE_SIGNING)
