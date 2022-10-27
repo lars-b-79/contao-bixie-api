@@ -62,6 +62,8 @@ class MetadataController
             (new SingleLogoutService($acsUrl, SamlConstants::BINDING_SAML2_HTTP_REDIRECT))
         );
 
+        $spSsoDescriptor->addNameIDFormat(SamlConstants::NAME_ID_FORMAT_EMAIL);
+
         $serializationContext = new SerializationContext();
         $entityDescriptor->serialize($serializationContext->getDocument(), $serializationContext);
 
