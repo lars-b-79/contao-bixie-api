@@ -61,8 +61,6 @@ class AcsController
             throw new \RuntimeException('SAML message does not contain a valid assertion');
         }
 
-        dump($assertion);
-
         $idpEntityDescriptor = $this->getIdPEntityDescriptor($request);
 
         if ($assertion->getIssuer()->getValue() !== $idpEntityDescriptor->getEntityID()) {
@@ -88,6 +86,20 @@ class AcsController
         } catch (\Exception) {
             throw new BadRequestHttpException('SAML Signature validation failed');
         }
+
+        if (null !== ($notBefore = $assertion->getConditions()?->getNotBeforeDateTime())
+            && $notBefore > new \DateTime()
+        ) {
+            throw new BadRequestHttpException('SAML Assertion not active');
+        }
+
+        if (null !== ($notAfter = $assertion->getConditions()?->getNotOnOrAfterDateTime())
+            && $notAfter < new \DateTime()
+        ) {
+            throw new BadRequestHttpException('SAML Assertion expired');
+        }
+
+        dump($assertion);
 
         return new Response('SAML Successful');
     }
