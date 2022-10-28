@@ -8,9 +8,11 @@ use Contao\CoreBundle\Exception\InternalServerErrorHttpException;
 use LightSaml\Binding\BindingFactory;
 use LightSaml\Context\Profile\MessageContext;
 use LightSaml\Credential\KeyHelper;
+use LightSaml\Model\Assertion\AttributeStatement;
 use LightSaml\Model\Assertion\EncryptedAssertionReader;
 use LightSaml\Model\Metadata\KeyDescriptor;
 use LightSaml\Model\XmlDSig\AbstractSignatureReader;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -99,8 +101,19 @@ class AcsController
             throw new BadRequestHttpException('SAML Assertion expired');
         }
 
-        dump($assertion);
+        $attributes = [];
+        foreach ($assertion->getAllItems() as $item) {
+            if (!$item instanceof AttributeStatement) {
+                continue;
+            }
 
-        return new Response('SAML Successful');
+            foreach ($item->getAllAttributes() as $attribute) {
+                $attributes[$attribute->getName()] = $attribute->getFirstAttributeValue();
+            }
+        }
+
+        $request->getSession()->set('_saml_attributes', $attributes);
+
+        return new RedirectResponse($response->getRelayState());
     }
 }

@@ -44,6 +44,7 @@ class LoginModuleController extends AbstractFrontendModuleController
             ->setIssueInstant(new \DateTime())
             ->setDestination($targetUrl)
             ->setIssuer(new Issuer($this->getOwnEntityId($request)))
+            ->setRelayState($request->getUri())
         ;
 
         if ($idpSsoDescriptor?->getWantAuthnRequestsSigned()) {
