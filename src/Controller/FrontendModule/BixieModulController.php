@@ -18,6 +18,12 @@ class BixieModulController extends AbstractFrontendModuleController
 
     protected function getResponse(Template $template, ModuleModel $model, Request $request): ?Response
     {
+         //$samlAttributes = $request->getSession()->get('_saml_attributes');
+         //if (\is_array($samlAttributes)) {
+         //    $email = $samlAttributes['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']
+         //    dd($samlAttributes);
+         //}
+
         if (is_null($this->client)) {
             $this->client = \pcak\BixieApi\ApiClient::withConfiguredUrl();
         } else {
@@ -58,7 +64,7 @@ class BixieModulController extends AbstractFrontendModuleController
 
         $zusage_id = $request->query->get('zid');
         $template->zusage_id = $zusage_id;
-        
+
         if (isset($zusage_id)) {
             foreach ($zusagen as $z0) {
                 if ($z0->id == $zusage_id) {
@@ -79,7 +85,7 @@ class BixieModulController extends AbstractFrontendModuleController
                     break;
                 }
             }
-    
+
             foreach ($posteingang->geschlossen as $t0) {
                 if ($t0->id == $prozess_id) {
                     $template->selectedTicket = $t0;
