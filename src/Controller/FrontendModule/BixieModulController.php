@@ -18,17 +18,28 @@ class BixieModulController extends AbstractFrontendModuleController
 
     protected function getResponse(Template $template, ModuleModel $model, Request $request): ?Response
     {
-         //$samlAttributes = $request->getSession()->get('_saml_attributes');
-         //if (\is_array($samlAttributes)) {
-         //    $email = $samlAttributes['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']
-         //    dd($samlAttributes);
-         //}
+        
 
         if (is_null($this->client)) {
             $this->client = \pcak\BixieApi\ApiClient::withConfiguredUrl();
+
+            $samlAttributes = $request->getSession()->get('_saml_attributes');
+            if ( is_array($samlAttributes) ) {
+                $email = $samlAttributes['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
+                $pn = $samlAttributes['EmployeeNumber'];
+                  
+                if( !empty($email) && !empty($pn) )
+                    $this->client->tokenFromParameter( $pn, $email, $request->server->get('HTTP_HOST') );
+            }
+
         } else {
             $this->client->updateFromSession();
         }
+
+        
+
+
+
 
         $template->loginStatus = $this->client->isLoggedIn();
 

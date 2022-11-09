@@ -18,6 +18,7 @@ class ApiClient
     private String $token = '';
     private $zusagen;
     private $posteingang;
+    
   
 
 
@@ -39,6 +40,27 @@ class ApiClient
         }
 
         return self::base_url;
+    }
+
+    public static function getJwtSecret()
+    {
+        $rootDir = \System::getContainer()->getParameter('kernel.project_dir');
+        $parameter_file_path = $rootDir . '/config/parameters.yml';
+
+        $replace = (PHP_OS_FAMILY === "Windows") ? '\\' : '/';
+        $parameter_file_path = str_replace(['\\', '/'], $replace, $parameter_file_path);
+
+        
+        if ( !file_exists($parameter_file_path))
+            return null;
+
+
+        $parameters = Yaml::parse(file_get_contents($parameter_file_path));
+
+        if ( !array_key_exists('jwt-secret', $parameters['parameters']))
+            return null;
+       
+        return $parameters['parameters']['jwt-secret'];
     }
 
 
@@ -66,9 +88,9 @@ class ApiClient
             $instance->posteingang = $_SESSION[self::session_posteingang_key];
         }
 
-
         return $instance;
     }
+
 
     public static function withTestHandler($handlerStack)
     {
@@ -93,6 +115,30 @@ class ApiClient
 
 
         return $instance;
+    }
+
+    public static function constructJwt( $pn, $email, $host, $secret )
+    {
+        $headers = array('alg'=>'HS256','typ'=>'JWT');
+        $payload = array('pn'=>$pn,'email'=>$email, 'host'=>$host, 'exp'=>(time() + 3600));
+        
+        $headers_encoded = ApiClient::base64url_encode(json_encode($headers));	
+	    $payload_encoded = ApiClient::base64url_encode(json_encode($payload));
+	
+	    $signature = hash_hmac('SHA256', "$headers_encoded.$payload_encoded", $secret, true);
+	    $signature_encoded = ApiClient::base64url_encode($signature);	
+	    return  "$headers_encoded.$payload_encoded.$signature_encoded";
+    }
+
+    private static function base64url_encode( $str ) 
+    {
+        return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
+    }
+
+    public function tokenFromParameter( $pn, $email, $host )
+    {
+        $secret = getJwtSecret();        
+	    $this->token = constructJwt( $pn, $email, $host, getJwtSecret() );
     }
 
     public function getToken()
