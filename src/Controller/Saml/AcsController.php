@@ -114,6 +114,6 @@ class AcsController
 
         $request->getSession()->set('_saml_attributes', $attributes);
 
-        return new RedirectResponse($response->getRelayState());
+        return new RedirectResponse($response->getRelayState() . "#bav-konto" );
     }
 }

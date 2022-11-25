@@ -117,28 +117,28 @@ class ApiClient
         return $instance;
     }
 
-    public static function constructJwt( $pn, $email, $host, $secret )
+    public function constructJwt( $pn, $email, $host, $secret )
     {
         $headers = array('alg'=>'HS256','typ'=>'JWT');
         $payload = array('pn'=>$pn,'email'=>$email, 'host'=>$host, 'exp'=>(time() + 3600));
         
-        $headers_encoded = ApiClient::base64url_encode(json_encode($headers));	
-	    $payload_encoded = ApiClient::base64url_encode(json_encode($payload));
+        $headers_encoded = $this->base64url_encode(json_encode($headers));	
+	    $payload_encoded = $this->base64url_encode(json_encode($payload));
 	
 	    $signature = hash_hmac('SHA256', "$headers_encoded.$payload_encoded", $secret, true);
-	    $signature_encoded = ApiClient::base64url_encode($signature);	
+	    $signature_encoded = $this->base64url_encode($signature);	
 	    return  "$headers_encoded.$payload_encoded.$signature_encoded";
     }
 
-    private static function base64url_encode( $str ) 
+    private function base64url_encode( $str ) 
     {
         return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
     }
 
     public function tokenFromParameter( $pn, $email, $host )
     {
-        $secret = getJwtSecret();        
-	    $this->token = constructJwt( $pn, $email, $host, getJwtSecret() );
+        $secret = $this->getJwtSecret();        
+	    $this->token = $this->constructJwt( $pn, $email, $host, $secret );
     }
 
     public function getToken()
