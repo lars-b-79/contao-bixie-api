@@ -27,6 +27,33 @@ class AcsController
 {
     use SamlControllerTrait;
 
+
+
+    public static function logAssertions()
+    {
+        $rootDir = \System::getContainer()->getParameter('kernel.project_dir');
+        $parameter_file_path = $rootDir . '/config/parameters.yml';
+
+        $replace = (PHP_OS_FAMILY === "Windows") ? '\\' : '/';
+        $parameter_file_path = str_replace(['\\', '/'], $replace, $parameter_file_path);
+
+        
+        if ( !file_exists($parameter_file_path))
+            return false;
+
+
+        $parameters = Yaml::parse(file_get_contents($parameter_file_path));
+
+        if ( !array_key_exists('log-assertions', $parameters['parameters']))
+            return false;
+       
+        return $parameters['parameters']['log-assertions'];
+    }
+
+
+
+
+
     public function __invoke(Request $request): Response
     {
         try {
@@ -100,6 +127,10 @@ class AcsController
         ) {
             throw new BadRequestHttpException('SAML Assertion expired');
         }
+
+
+        if( self::logAssertions() )
+            error_log( var_export( $assertion, true) );
 
         $attributes = [];
         foreach ($assertion->getAllItems() as $item) {
