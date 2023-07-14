@@ -27,9 +27,13 @@ class BixieModulController extends AbstractFrontendModuleController
             if ( is_array($samlAttributes) ) {
                 $email = $samlAttributes['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
                 $pn = $samlAttributes['EmployeeNumber'];
+                $external_username = $samlAttributes['NameID'];
                   
                 if( !empty($email) && !empty($pn) )
                     $this->client->tokenFromParameter( $pn, $email, $request->server->get('HTTP_HOST') );
+
+                if( !empty( $external_username ) ) 
+                    $this->client->tokenFromParameterUsername( $pn, $email, $request->server->get('HTTP_HOST') );
             }
 
         } else {
