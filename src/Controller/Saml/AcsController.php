@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Terminal42\ServiceAnnotationBundle\Annotation\ServiceTag;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * @Route(path="/_saml/acs", name="saml_acs", defaults={"_scope" = "frontend", "_token_check" = false})
@@ -129,14 +130,18 @@ class AcsController
         }
 
 
-        if( self::logAssertions() )
-            error_log( var_export( $assertion, true) );
+        $logMe = self::logAssertions();
+      
 
         $attributes = [];
         foreach ($assertion->getAllItems() as $item) {
             if (!$item instanceof AttributeStatement) {
                 continue;
             }
+
+
+            if( $logMe )
+                error_log( var_export( $item, true ) );
 
             foreach ($item->getAllAttributes() as $attribute) {
                 $attributes[$attribute->getName()] = $attribute->getFirstAttributeValue();
