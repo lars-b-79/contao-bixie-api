@@ -17,6 +17,8 @@ use LightSaml\Model\XmlDSig\SignatureWriter;
 use LightSaml\SamlConstants;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use LightSaml\Context\Profile\Helper\MessageContextHelper;
+use LightSaml\Model\Protocol\NameIDPolicy;
 
 class LoginModuleController extends AbstractFrontendModuleController
 {
@@ -45,7 +47,11 @@ class LoginModuleController extends AbstractFrontendModuleController
             ->setDestination($targetUrl)
             ->setIssuer(new Issuer($this->getOwnEntityId($request)))
             ->setRelayState($request->getUri())
+            ->setNameIDPolicy(new NameIDPolicy( SamlConstants::NAME_ID_FORMAT_TRANSIENT, true) )
         ;
+
+        
+    
 
         if ($idpSsoDescriptor?->getWantAuthnRequestsSigned()) {
             $credentials = $this->getOwnCredential($request);
@@ -55,7 +61,7 @@ class LoginModuleController extends AbstractFrontendModuleController
         }
 
         $bindingFactory = new BindingFactory();
-        $redirectBinding = $bindingFactory->create(SamlConstants::BINDING_SAML2_HTTP_POST);
+        $redirectBinding = $bindingFactory->create(SamlConstants::BINDING_SAML2_HTTP_REDIRECT);
 
         $messageContext = new MessageContext();
         $messageContext->setMessage($authnRequest);
@@ -63,8 +69,15 @@ class LoginModuleController extends AbstractFrontendModuleController
         /** @var SamlPostResponse $httpResponse */
         $httpResponse = $redirectBinding->send($messageContext);
 
-        $template->destination = $httpResponse->getDestination();
-        $template->data = $httpResponse->getData();
+        $template->destination = $httpResponse->getTargetUrl();
+        
+
+        $msg = MessageContextHelper::asSamlMessage($messageContext);     
+        $serializationContext = $messageContext->getSerializationContext();
+        $msgStr = $serializationContext->getDocument()->saveXML();
+        $msgStr = base64_encode($msgStr);
+        $template->data = ['SAMLRequest' => $msgStr, 'RelayState' => $msg->getRelayState()];       
+        
 
         return $template->getResponse();
     }
