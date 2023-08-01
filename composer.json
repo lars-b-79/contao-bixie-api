@@ -40,5 +40,11 @@
     },
     "extra": {
         "contao-manager-plugin": "pcak\\BixieApi\\ContaoManager\\Plugin"
-   }
+   },
+    "config": {
+        "allow-plugins": {
+            "contao-components/installer": true,
+            "contao/manager-plugin": true
+        }
+    }
 }

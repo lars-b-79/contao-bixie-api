@@ -33,21 +33,13 @@ class BixieModulController extends AbstractFrontendModuleController
                     $this->client->tokenFromParameter( $pn, $email, $request->server->get('HTTP_HOST') );
 
                 if( !empty( $external_username ) ) 
-                    $this->client->tokenFromParameterUsername( $pn, $email, $request->server->get('HTTP_HOST') );
+                    $this->client->tokenFromParameterUsername( $external_username, $email, $request->server->get('HTTP_HOST') );
             }
 
         } else {
             $this->client->updateFromSession();
         }
 
-        
-
-
-
-
-        $template->loginStatus = $this->client->isLoggedIn();
-
-        LoginStatusCookie::set($this->client->isLoggedIn());
 
 
         if (!$this->client->isLoggedIn()) {
@@ -55,16 +47,30 @@ class BixieModulController extends AbstractFrontendModuleController
         }
 
         if ($this->client->needZusagenUpdate()) {
-            $this->client->readZusagen();
+            if( false == $this->client->readZusagen() )
+            {
+                $this->client->clear();
+                $template->loginStatus = $this->client->isLoggedIn();
+                $template->loginMsg = "Der Benutzer konnte nicht im bixie authentifiziert werden.";
+                return $template->getResponse();
+            }
         }
 
         if ($this->client->needPosteingangUpdate()) {
-            $this->client->readPosteingang();
+            if( false == $this->client->readPosteingang() )
+            {
+                $this->client->clear();
+                $template->loginStatus = $this->client->isLoggedIn();
+                $template->loginMsg = "Der Benutzer konnte nicht im bixie authentifiziert werden.";
+                return $template->getResponse();
+            }
         }
+      
 
+        $template->loginStatus = $this->client->isLoggedIn();
+        LoginStatusCookie::set($this->client->isLoggedIn());
 
         $template->token = $this->client->getToken();
-
         $posteingang = $this->client->getPosteingang();
         $template->vorname = $posteingang->vorname;
         $template->name = $posteingang->name;

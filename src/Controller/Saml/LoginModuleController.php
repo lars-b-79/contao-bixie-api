@@ -47,7 +47,7 @@ class LoginModuleController extends AbstractFrontendModuleController
             ->setDestination($targetUrl)
             ->setIssuer(new Issuer($this->getOwnEntityId($request)))
             ->setRelayState($request->getUri())
-            ->setNameIDPolicy(new NameIDPolicy( SamlConstants::NAME_ID_FORMAT_TRANSIENT, true) )
+            ->setNameIDPolicy(new NameIDPolicy( SamlConstants::NAME_ID_FORMAT_UNSPECIFIED, true) )
         ;
 
         
@@ -74,10 +74,12 @@ class LoginModuleController extends AbstractFrontendModuleController
 
         $msg = MessageContextHelper::asSamlMessage($messageContext);     
         $serializationContext = $messageContext->getSerializationContext();
-        $msgStr = $serializationContext->getDocument()->saveXML();
+        $doc = $serializationContext->getDocument();
+        $msgStr = $doc->saveXML($doc->documentElement);
+        $msgStr = gzdeflate($msgStr);
         $msgStr = base64_encode($msgStr);
         $template->data = ['SAMLRequest' => $msgStr, 'RelayState' => $msg->getRelayState()];       
-        
+    
 
         return $template->getResponse();
     }

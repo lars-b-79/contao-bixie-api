@@ -2,7 +2,7 @@
 
 <?php $this->block('content'); ?>
 
-    <form method="post" action="<?= \Contao\StringUtil::specialcharsUrl($this->destination) ?>">
+    <form method="get" action="<?= \Contao\StringUtil::specialcharsUrl($this->destination) ?>">
         <?php foreach ($this->data as $name => $value): ?>
             <input type="hidden" name="<?= \Contao\StringUtil::specialcharsAttribute($name) ?>" value="<?= \Contao\StringUtil::specialcharsAttribute($value) ?>"/>
         <?php endforeach; ?>

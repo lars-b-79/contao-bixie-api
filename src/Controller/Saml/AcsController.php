@@ -134,11 +134,21 @@ class AcsController
       
 
         $attributes = [];
+        if( null !== $assertion->getSubject() )
+        {
+            $nameId = $assertion->getSubject()->getNameID();
+            $attributes['NameID'] = $nameId->getValue();
+
+            if( $logMe )
+                error_log( var_export( $nameId, true ) );            
+        }
+
+
+       
         foreach ($assertion->getAllItems() as $item) {
             if (!$item instanceof AttributeStatement) {
                 continue;
             }
-
 
             if( $logMe )
                 error_log( var_export( $item, true ) );
