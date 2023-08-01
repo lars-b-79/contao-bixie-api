@@ -21,6 +21,9 @@ class ApiClient
     
   
 
+    
+
+
 
     public static function getApiUrl()
     {
@@ -144,6 +147,13 @@ class ApiClient
 	    return  "$headers_encoded.$payload_encoded.$signature_encoded";
     }
 
+    public function clear()
+    {
+        $this->token = '';
+        $this->zusagen = null;
+        $this->posteingang = null;
+    }
+    
 
     private function base64url_encode( $str ) 
     {
