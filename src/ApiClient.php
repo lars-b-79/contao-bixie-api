@@ -16,6 +16,7 @@ class ApiClient
 
     private \GuzzleHttp\Client $client;
     private String $token = '';
+    private $onboarding = False;
     private $zusagen;
     private $posteingang;
     
@@ -215,22 +216,36 @@ class ApiClient
             'password'    =>  $password );
 
        
+        $this->onboarding = False;
         $response = null;
+        $statusCode = 0;
         try {
             $response = $this->client->post('/v1/token', [
                 'body' => json_encode($body),
                 'headers' => ['Content-Type' => 'application/json']
             ]);
+            $statusCode = $response->getStatusCode();
         } catch (ClientException | ServerException $e) {
+            $statusCode = $e->getResponse()->getStatusCode();
             error_log($e->getMessage());
             $this->token = '';
+
+            if ($statusCode == 401) {
+                $this->onboarding = True;
+            }           
+
             return false;
         }
      
-        if ($response->getStatusCode() == 200) {
+        if ($statusCode == 200) {
             $this->token = (string) $response->getBody();
             $_SESSION[self::session_token_key] = $this->token;
             return true;
+        }
+
+
+        if ($statusCode == 401) {
+            $this->onboarding = True;
         }
 
         $this->token = '';
@@ -278,6 +293,11 @@ class ApiClient
     public function getPosteingang()
     {
         return $this->posteingang;
+    }
+
+    public function isOnboarding()
+    {
+        return $this->onboarding;
     }
 
 

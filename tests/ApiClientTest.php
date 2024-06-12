@@ -59,8 +59,30 @@ final class ApiClientTest extends TestCase
         $this->assertFalse($ac->isLoggedIn()) ;
         $this->assertFalse($ac->login('test', 'test')) ;
         $this->assertFalse($ac->isLoggedIn()) ;
+        $this->assertFalse($ac->isOnboarding()) ;
         unset($_SESSION);
     }
+
+
+
+
+    public function test_login_failed_401(): void
+    {
+        $mock = new MockHandler([
+            new Response(401, ['Content-Length' => 0])
+        ]);
+        
+        $handlerStack = HandlerStack::create($mock);
+        
+
+        $ac = ApiClient::withTestHandler($handlerStack);
+        $this->assertFalse($ac->isLoggedIn()) ;
+        $this->assertFalse($ac->login('test', 'test')) ;
+        $this->assertFalse($ac->isLoggedIn()) ;
+        $this->assertTrue($ac->isOnboarding()) ;
+        unset($_SESSION);
+    }
+
 
 
     public function test_zusagen_200(): void

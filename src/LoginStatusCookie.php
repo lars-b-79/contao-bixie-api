@@ -7,7 +7,7 @@ use DateTimeInterface;
 
 class LoginStatusCookie
 {
-    public static function set($logged_in)
+    public static function set($logged_in, $onboarding)
     {
         $result_cookie = "logged-in";
         if ($logged_in == false) {
@@ -18,5 +18,13 @@ class LoginStatusCookie
         $dt->modify('+1 hour');
         $timestamp = $dt->getTimestamp() + $dt->getOffset();
         \System::setCookie("bixie-login-status", $result_cookie, $timestamp);
+
+
+        $onboarding_cookie = "no-onboarding";
+        if ($onboarding == true) {
+            $onboarding_cookie = "onboarding";
+        }
+
+        \System::setCookie("bixie-onboarding-status", $onboarding_cookie, $timestamp);
     }
 }

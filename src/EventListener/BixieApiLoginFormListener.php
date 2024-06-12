@@ -38,14 +38,12 @@ class BixieApiLoginFormListener
         } else {
             $this->client->updateFromSession();
         }
-
-
         
         $result_status = true;
         if ($this->client->login($username, $password) == false) {
             $result_status = false;
         }
        
-        LoginStatusCookie::set($result_status);
+        LoginStatusCookie::set($result_status, $this->client->isOnboarding() );
     }
 }
