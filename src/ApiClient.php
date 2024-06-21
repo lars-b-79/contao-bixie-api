@@ -8,7 +8,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class ApiClient
 {
-    const base_url = 'https://api.bixie.cloud/v1/';
+    const base_url = 'https://api.bixie.de/brp/v1/';
     //const base_url = 'https://staging-api.bixie.cloud/v1/';
     const session_token_key = 'bixie_api_token';
     const session_zusagen_key = 'bixie_api_zusagen';
@@ -220,7 +220,7 @@ class ApiClient
         $response = null;
         $statusCode = 0;
         try {
-            $response = $this->client->post('/v1/token', [
+            $response = $this->client->post('/brp/v1/token', [
                 'body' => json_encode($body),
                 'headers' => ['Content-Type' => 'application/json']
             ]);
@@ -260,7 +260,7 @@ class ApiClient
        
         $response = null;
         try {
-            $response = $this->client->post('/v1/register', [
+            $response = $this->client->post('/brp/v1/register', [
                 'body' => json_encode($body),
                 'headers' => ['Content-Type' => 'application/json']
             ]);
@@ -309,7 +309,7 @@ class ApiClient
 
         $response = null;
         try {
-            $response = $this->client->get('/v1/zusagen', [
+            $response = $this->client->get('/brp/v1/zusagen', [
                 'headers' => ['Authorization' => 'Bearer ' . $this->token]
             ]);
         } catch (ClientException | ServerException $e) {
@@ -335,7 +335,7 @@ class ApiClient
 
         $response = null;
         try {
-            $response = $this->client->get('/v1/posteingang', [
+            $response = $this->client->get('/brp/v1/posteingang', [
                 'headers' => ['Authorization' => 'Bearer ' . $this->token]
             ]);
         } catch (ClientException | ServerException $e) {
@@ -384,7 +384,7 @@ class ApiClient
 
         $response = null;
         try {
-            $response = $this->client->request('POST', '/v1/beitrag', [
+            $response = $this->client->request('POST', '/brp/v1/beitrag', [
                 'headers' => ['Authorization' => 'Bearer ' . $this->token],
                 'multipart' => $multipart
             ]);
@@ -436,7 +436,7 @@ class ApiClient
 
         $response = null;
         try {
-            $response = $this->client->request('POST', '/v1/ticket', [
+            $response = $this->client->request('POST', '/brp/v1/ticket', [
                 'headers' => ['Authorization' => 'Bearer ' . $this->token],
                 'multipart' => $multipart
             ]);
