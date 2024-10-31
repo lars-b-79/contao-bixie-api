@@ -71,6 +71,7 @@ class BixieModulController extends AbstractFrontendModuleController
         LoginStatusCookie::set($this->client->isLoggedIn(), $this->client->isOnboarding() );
 
         $template->token = $this->client->getToken();
+        $template->token_b64 = $this->client->getToken_b64();
         $posteingang = $this->client->getPosteingang();
         $template->vorname = $posteingang->vorname;
         $template->name = $posteingang->name;

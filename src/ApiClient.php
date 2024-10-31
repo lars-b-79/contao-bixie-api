@@ -15,7 +15,8 @@ class ApiClient
     const session_posteingang_key = 'bixie_api_posteingang';
 
     private \GuzzleHttp\Client $client;
-    private String $token = '';
+    private String $token = '';    
+    private String $token_b64 = '';    
     private $onboarding = False;
     private $zusagen;
     private $posteingang;
@@ -82,6 +83,7 @@ class ApiClient
 
         if (isset($_SESSION[self::session_token_key])) {
             $instance->token = $_SESSION[self::session_token_key];
+            $instance->token_b64 = base64_encode( $instance->token );
         }
 
         if (isset($_SESSION[self::session_zusagen_key])) {
@@ -107,6 +109,7 @@ class ApiClient
 
         if (isset($_SESSION[self::session_token_key])) {
             $instance->token = $_SESSION[self::session_token_key];
+            $instance->token_b64 = base64_encode( $instance->token );
         }
 
         if (isset($_SESSION[self::session_zusagen_key])) {
@@ -151,6 +154,7 @@ class ApiClient
     public function clear()
     {
         $this->token = '';
+        $this->token_b64 = '';
         $this->zusagen = null;
         $this->posteingang = null;
     }
@@ -165,6 +169,7 @@ class ApiClient
     {
         $secret = $this->getJwtSecret();        
 	    $this->token = $this->constructJwt( $pn, $email, $host, $secret );
+        $this->token_b64 = base64_encode( $this->token );
     }
 
 
@@ -172,6 +177,7 @@ class ApiClient
     {
         $secret = $this->getJwtSecret();        
 	    $this->token = $this->constructJwtUsername( $username, $email, $host, $secret );
+        $this->token_b64 = base64_encode( $this->token );
     }
 
 
@@ -183,7 +189,12 @@ class ApiClient
         return $this->token;
     }
 
- 
+    public function getToken_b64()
+    {
+        return $this->token_b64;
+    }
+
+  
     public function updateFromSession()
     {
         if (!isset($_SESSION)) {
@@ -192,6 +203,7 @@ class ApiClient
 
         if (isset($_SESSION[self::session_token_key])) {
             $this->token = $_SESSION[self::session_token_key];
+            $this->token_b64 = base64_encode( $this->token );
         }
 
         if (isset($_SESSION[self::session_zusagen_key])) {
@@ -230,6 +242,7 @@ class ApiClient
             error_log($e->getMessage());
             $this->token = '';
 
+
             if ($statusCode == 401) {
                 $this->onboarding = True;
             }           
@@ -239,6 +252,7 @@ class ApiClient
      
         if ($statusCode == 200) {
             $this->token = (string) $response->getBody();
+            $this->token_b64 = base64_encode( $this->token );
             $_SESSION[self::session_token_key] = $this->token;
             return true;
         }
